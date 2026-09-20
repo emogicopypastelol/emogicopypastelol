@@ -1,0 +1,178 @@
+[
+  {
+    "slug": "smileys-emotion",
+    "name": "Smileys & Emotion",
+    "type": "emoji",
+    "icon": "smile",
+    "description": "Smiley faces, emotions, and feelings emoji",
+    "count": 171
+  },
+  {
+    "slug": "people-body",
+    "name": "People & Body",
+    "type": "emoji",
+    "icon": "user",
+    "description": "People, hand gestures, and body parts emoji",
+    "count": 388
+  },
+  {
+    "slug": "animals-nature",
+    "name": "Animals & Nature",
+    "type": "emoji",
+    "icon": "cat",
+    "description": "Animals, plants, and nature emoji",
+    "count": 160
+  },
+  {
+    "slug": "food-drink",
+    "name": "Food & Drink",
+    "type": "emoji",
+    "icon": "apple",
+    "description": "Food, drinks, and cooking emoji",
+    "count": 131
+  },
+  {
+    "slug": "travel-places",
+    "name": "Travel & Places",
+    "type": "emoji",
+    "icon": "plane",
+    "description": "Travel, places, and transportation emoji",
+    "count": 219
+  },
+  {
+    "slug": "activities",
+    "name": "Activities",
+    "type": "emoji",
+    "icon": "trophy",
+    "description": "Sports, games, and activities emoji",
+    "count": 85
+  },
+  {
+    "slug": "objects",
+    "name": "Objects",
+    "type": "emoji",
+    "icon": "lightbulb",
+    "description": "Objects, tools, and things emoji",
+    "count": 266
+  },
+  {
+    "slug": "symbols",
+    "name": "Symbols",
+    "type": "emoji",
+    "icon": "hash",
+    "description": "Symbols, signs, and marks emoji",
+    "count": 224
+  },
+  {
+    "slug": "flags",
+    "name": "Flags",
+    "type": "emoji",
+    "icon": "flag",
+    "description": "Country and regional flags emoji",
+    "count": 270
+  },
+  {
+    "slug": "hearts",
+    "name": "Heart Symbols",
+    "type": "symbol",
+    "icon": "heart",
+    "description": "Copy and paste heart symbols including colored hearts, outlined hearts, and decorative heart characters",
+    "count": 24
+  },
+  {
+    "slug": "stars",
+    "name": "Star Symbols",
+    "type": "symbol",
+    "icon": "star",
+    "description": "Copy and paste star symbols including solid stars, outlined stars, and decorative star characters",
+    "count": 12
+  },
+  {
+    "slug": "arrows",
+    "name": "Arrow Symbols",
+    "type": "symbol",
+    "icon": "arrow-right",
+    "description": "Copy and paste arrow symbols including directional arrows, double arrows, and decorative arrow characters",
+    "count": 21
+  },
+  {
+    "slug": "math",
+    "name": "Math Symbols",
+    "type": "symbol",
+    "icon": "calculator",
+    "description": "Copy and paste mathematical symbols including operators, relations, and special math characters",
+    "count": 26
+  },
+  {
+    "slug": "currency",
+    "name": "Currency Symbols",
+    "type": "symbol",
+    "icon": "dollar-sign",
+    "description": "Copy and paste currency symbols from around the world",
+    "count": 11
+  },
+  {
+    "slug": "shapes",
+    "name": "Shape Symbols",
+    "type": "symbol",
+    "icon": "square",
+    "description": "Copy and paste geometric shapes including circles, squares, triangles, and diamonds",
+    "count": 12
+  },
+  {
+    "slug": "lines",
+    "name": "Line & Border Symbols",
+    "type": "symbol",
+    "icon": "minus",
+    "description": "Copy and paste line symbols, box-drawing characters, and border characters",
+    "count": 0
+  },
+  {
+    "slug": "music",
+    "name": "Music Symbols",
+    "type": "symbol",
+    "icon": "music",
+    "description": "Copy and paste music symbols including notes, clefs, and musical notation",
+    "count": 7
+  },
+  {
+    "slug": "weather",
+    "name": "Weather Symbols",
+    "type": "symbol",
+    "icon": "cloud",
+    "description": "Copy and paste weather symbols including sun, moon, cloud, and atmospheric characters",
+    "count": 9
+  },
+  {
+    "slug": "technical",
+    "name": "Technical Symbols",
+    "type": "symbol",
+    "icon": "settings",
+    "description": "Copy and paste technical symbols including checkmarks, bullets, and special characters",
+    "count": 16
+  },
+  {
+    "slug": "greek",
+    "name": "Greek Letters",
+    "type": "symbol",
+    "icon": "omega",
+    "description": "Copy and paste Greek alphabet letters including uppercase and lowercase characters",
+    "count": 22
+  },
+  {
+    "slug": "latin",
+    "name": "Latin Extended",
+    "type": "symbol",
+    "icon": "a-large-small",
+    "description": "Copy and paste accented Latin characters and extended Latin letters",
+    "count": 0
+  },
+  {
+    "slug": "miscellaneous",
+    "name": "Miscellaneous Symbols",
+    "type": "symbol",
+    "icon": "sparkles",
+    "description": "Copy and paste miscellaneous symbols and special characters",
+    "count": 17
+  }
+]

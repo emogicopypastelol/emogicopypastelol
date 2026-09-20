@@ -1,0 +1,23 @@
+{
+  "name": "emogi",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build:data": "tsx scripts/build-data.ts",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6",
+    "tsx": "^4.23.13",
+    "turbo": "^2.10.13",
+    "typescript": "7.0.2",
+    "unicode-emoji-json": "0.9.0"
+  },
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=24"
+  }
+}
