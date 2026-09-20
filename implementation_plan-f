@@ -74,9 +74,7 @@ Restructure the CopyPaste Unicode project so that **all browsable content is pre
 ---
 
 ## Proposed Changes
-
 ### Component 1: Build Pipeline — Search Index Generation
-
 Update the build script to output a **minimal search index** separate from the full data.
 
 #### [MODIFY] [build-data.ts](file:///c:/Users/dl/Desktop/Main_Projects_V2/emogi/scripts/build-data.ts)
