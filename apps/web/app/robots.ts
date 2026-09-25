@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/search", "/api/"],
+        disallow: ["/api/"],
       },
     ],
     sitemap: "https://copypaste-unicode.com/sitemap.xml",

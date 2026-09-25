@@ -1,68 +1,21 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import type { TrayItem } from "@repo/types";
 import { EmojiTray } from "@/components/EmojiTray";
 import { SearchBox } from "@/components/SearchBox";
-import { getTrayItems, addTrayItem, removeTrayItem, clearTray, addRecentItem } from "@/lib/storage";
 
 /**
- * Client-side interactivity layer for the homepage & category pages.
- * Provides global search and the interactive Copy Bar (EmojiTray).
- * Fully synchronized with localStorage and custom window events.
+ * Client-side interactivity layer for category pages.
+ * Provides global search and the self-contained interactive Copy Bar (EmojiTray).
+ * Clean, fast, and fully synchronized with localStorage.
  */
 export function HomePageClient() {
-  const [trayItems, setTrayItems] = useState<TrayItem[]>([]);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setTrayItems(getTrayItems());
-
-    const handleTrayUpdate = (e: Event) => {
-      const customEvent = e as CustomEvent<TrayItem[]>;
-      if (customEvent.detail) {
-        setTrayItems(customEvent.detail);
-      } else {
-        setTrayItems(getTrayItems());
-      }
-    };
-
-    window.addEventListener("copypaste:tray-updated", handleTrayUpdate);
-    return () => {
-      window.removeEventListener("copypaste:tray-updated", handleTrayUpdate);
-    };
-  }, []);
-
-  const handleAddToTray = useCallback((item: TrayItem) => {
-    const updated = addTrayItem(item);
-    setTrayItems([...updated]);
-    addRecentItem({ character: item.character, name: "", id: item.id });
-  }, []);
-
-  const handleRemoveFromTray = useCallback((index: number) => {
-    const updated = removeTrayItem(index);
-    setTrayItems([...updated]);
-  }, []);
-
-  const handleClearTray = useCallback(() => {
-    clearTray();
-    setTrayItems([]);
-  }, []);
-
   return (
     <>
-      {/* Global Search Input — lazy-loads its own search index */}
-      <SearchBox onAddToTray={handleAddToTray} />
+      {/* Global Search Input — lazy-loads search index */}
+      <SearchBox className="category-tool-search" />
 
-      {/* Copy Bar / Emoji Tray */}
-      <div className="mt-3">
-        <EmojiTray
-          items={mounted ? trayItems : []}
-          onRemove={handleRemoveFromTray}
-          onClear={handleClearTray}
-        />
-      </div>
+      {/* Copy Bar / Emoji Tray (Floatable / Sticky) */}
+      <EmojiTray className="mt-3 category-tool-tray" />
     </>
   );
 }

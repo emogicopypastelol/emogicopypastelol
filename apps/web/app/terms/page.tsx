@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms of service for CopyPaste Unicode.",
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: true },
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {
@@ -11,7 +14,7 @@ export default function TermsPage() {
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Terms of Service</h1>
       <div className="text-sm leading-relaxed space-y-4 text-muted-foreground">
-        <p><strong className="text-foreground">Last updated:</strong> {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+        <p><strong className="text-foreground">Last updated:</strong> <time dateTime="2026-09-22">September 22, 2026</time></p>
 
         <h2 className="text-base font-semibold text-foreground mt-6">Use of Service</h2>
         <p>CopyPaste Unicode provides Unicode character data for informational and utility purposes. You may use the service to search, browse, and copy characters for personal or commercial use.</p>

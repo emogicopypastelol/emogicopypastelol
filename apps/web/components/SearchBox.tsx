@@ -5,32 +5,7 @@ import { Search, X, Loader2 } from "lucide-react";
 import type { CharacterItem, SearchResult, TrayItem } from "@repo/types";
 import { search } from "@repo/search";
 import { CharacterGrid } from "./CharacterGrid";
-
-// In-memory module cache for lazy-loaded search index
-let cachedSearchIndex: CharacterItem[] | null = null;
-let fetchPromise: Promise<CharacterItem[]> | null = null;
-
-async function loadSearchIndex(): Promise<CharacterItem[]> {
-  if (cachedSearchIndex) return cachedSearchIndex;
-  if (fetchPromise) return fetchPromise;
-
-  fetchPromise = fetch("/data/search-index.json")
-    .then((res) => {
-      if (!res.ok) throw new Error(`Failed to load search index: ${res.status}`);
-      return res.json();
-    })
-    .then((data: CharacterItem[]) => {
-      cachedSearchIndex = data;
-      return data;
-    })
-    .catch((err) => {
-      console.error("Error loading search index:", err);
-      fetchPromise = null;
-      return [];
-    });
-
-  return fetchPromise;
-}
+import { loadSearchIndex, getCachedSearchIndex } from "@/lib/searchIndex";
 
 /**
  * Global search box with client-side instant search.
@@ -42,11 +17,13 @@ export function SearchBox({
   onClose,
   onAddToTray,
   autoFocus = false,
+  className = "",
 }: {
   allItems?: CharacterItem[];
   onClose?: () => void;
   onAddToTray?: (item: TrayItem) => void;
   autoFocus?: boolean;
+  className?: string;
 }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -57,7 +34,8 @@ export function SearchBox({
   // Trigger preload of search index
   const ensureIndexLoaded = useCallback(async (): Promise<CharacterItem[]> => {
     if (allItems && allItems.length > 0) return allItems;
-    if (cachedSearchIndex) return cachedSearchIndex;
+    const cached = getCachedSearchIndex();
+    if (cached) return cached;
 
     setIsLoadingIndex(true);
     try {
@@ -98,7 +76,7 @@ export function SearchBox({
         return;
       }
 
-      const items = allItems || cachedSearchIndex;
+      const items = allItems || getCachedSearchIndex();
       if (items && items.length > 0) {
         performSearch(value, items);
       } else {
@@ -135,7 +113,7 @@ export function SearchBox({
   };
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className}`}>
       <div className="search-input-wrapper relative flex items-center">
         {isLoadingIndex ? (
           <Loader2 className="search-icon animate-spin text-muted-foreground" size={18} />

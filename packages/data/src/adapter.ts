@@ -118,6 +118,13 @@ export function adaptUnicodeEmojiData(
     const categorySlug = groupSlugMap[group.name] || nameToSlug(group.name);
 
     for (const raw of group.emojis) {
+      // Exclude unstandardized/draft Unicode 16.0+ emojis that cannot be displayed by fonts or Twemoji (producing black border tofu boxes ▯)
+      const emojiVer = parseFloat(raw.emoji_version);
+      const unicodeVer = parseFloat(raw.unicode_version);
+      if (emojiVer >= 16.0 || unicodeVer >= 16.0) {
+        continue;
+      }
+
       let slug = raw.slug.replace(/_/g, "-");
 
       if (seenSlugs.has(slug)) {

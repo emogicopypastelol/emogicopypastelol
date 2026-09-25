@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { copyToClipboard } from "@/lib/clipboard";
-import { addRecentItem, addTrayItem } from "@/lib/storage";
+import { addTrayItem } from "@/lib/storage";
 
 /**
  * Client-side copy handler that attaches to a StaticCharacterGrid
@@ -36,9 +36,6 @@ export function CopyHandler({
     // 2. Add to Copy Bar / Tray (dispatches 'copypaste:tray-updated')
     addTrayItem({ character: char, id });
 
-    // 3. Add to recent items in localStorage
-    addRecentItem({ character: char, name, id });
-
     // 4. Tactile visual feedback: show checkmark badge
     const existing = button.querySelector(".copy-feedback");
     if (existing) existing.remove();
@@ -61,9 +58,33 @@ export function CopyHandler({
       return () => container.removeEventListener("click", handleClick);
     }
 
-    // Global listener fallback ensures clicks on any button[data-char] are handled
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    // Global image fallback handler if an SVG fails to load
+    const handleImgError = (e: Event) => {
+      const img = e.target as HTMLImageElement | null;
+      if (img && img.tagName === "IMG" && (img.classList.contains("twemoji-emoji-img") || img.classList.contains("flag-emoji-img"))) {
+        const parent = img.parentElement;
+        if (parent) {
+          img.style.display = "none";
+          const char = parent.getAttribute("data-char");
+          if (char) {
+            let fallback = parent.querySelector(".twemoji-fallback") as HTMLElement;
+            if (!fallback) {
+              fallback = document.createElement("span");
+              fallback.className = "twemoji-fallback";
+              fallback.textContent = char;
+              parent.appendChild(fallback);
+            }
+          }
+        }
+      }
+    };
+
+    window.addEventListener("error", handleImgError, true);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+      window.removeEventListener("error", handleImgError, true);
+    };
   }, [gridRef, handleClick]);
 
   return null;

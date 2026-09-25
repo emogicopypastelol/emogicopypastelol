@@ -21,11 +21,11 @@ interface CharacterItem {
   character: string;
   name: string;
   slug: string;
-  type: "emoji" | "symbol";
+  type: "emoji" | "symbol" | "kaomoji";
   category: string;
   subcategory?: string;
   keywords: string[];
-  unicode: string[];
+  unicode?: string[];
   version?: string;
   aliases?: string[];
   relatedIds?: string[];
@@ -69,16 +69,19 @@ async function main() {
   console.log("📦 Loading symbols data...");
 
   const { symbols } = await import("../packages/data/src/symbols.ts");
-  const { allCategories } = await import("../packages/data/src/categories.ts");
+  const { kaomoji } = await import("../packages/data/src/kaomoji.ts");
+  const { allCategories, emojiCategories } = await import("../packages/data/src/categories.ts");
 
   console.log(`   ✓ ${symbols.length} symbol items`);
+  console.log(`   ✓ ${kaomoji.length} kaomoji items`);
 
   // ── Validation ────────────────────────────────────────────────
   console.log("🔍 Validating data...");
 
-  const allItems = [...emojiItems, ...symbols];
+  const allItems = [...emojiItems, ...symbols, ...kaomoji];
   const ids = new Set<string>();
   const slugs = new Set<string>();
+  const emojiCategorySlugs = new Set(emojiCategories.map((c: any) => c.slug));
   let errors = 0;
 
   for (const item of allItems) {
@@ -105,11 +108,19 @@ async function main() {
     }
   }
 
+  // Check for routing collisions: no emoji slug may collide with an emoji category slug
+  for (const item of emojiItems) {
+    if (emojiCategorySlugs.has(item.slug)) {
+      console.error(`   ✗ Routing collision: emoji slug "${item.slug}" matches category slug!`);
+      errors++;
+    }
+  }
+
   if (errors > 0) {
     console.error(`\n❌ ${errors} validation errors found. Failing build.`);
     process.exit(1);
   } else {
-    console.log(`   ✓ All ${allItems.length} items validated successfully`);
+    console.log(`   ✓ All ${allItems.length} items validated successfully (0 routing collisions)`);
   }
 
   // ── Update category counts ────────────────────────────────────
@@ -133,23 +144,45 @@ async function main() {
     }
   }
 
-  // ── Write search index (minimal, for client-side lazy search) ─
-  console.log("💾 Writing search index for client-side search...");
+  // ── Write search indexes (split by type for minimal client payloads) ─
+  console.log("💾 Writing search indexes (split by type + combined)...");
 
   // Minimal search payload: only fields required for local search
-  const searchIndex = allItems.map((item) => ({
+  const toSearchPayload = (item: CharacterItem) => ({
     id: item.id,
     character: item.character,
     name: item.name,
     slug: item.slug,
     category: item.category,
     keywords: item.keywords,
-  }));
+  });
 
+  const emojiIndex = emojiItems.map(toSearchPayload);
+  const symbolsIndex = symbols.map(toSearchPayload);
+  const kaomojiIndex = kaomoji.map(toSearchPayload);
+  const searchIndex = allItems.map(toSearchPayload);
+
+  const emojiJson = JSON.stringify(emojiIndex);
+  const symbolsJson = JSON.stringify(symbolsIndex);
+  const kaomojiJson = JSON.stringify(kaomojiIndex);
   const searchJson = JSON.stringify(searchIndex);
+
+  fs.writeFileSync(path.join(OUT_DIR, "emoji-index.json"), emojiJson, "utf-8");
+  fs.writeFileSync(path.join(OUT_DIR, "symbols-index.json"), symbolsJson, "utf-8");
+  fs.writeFileSync(path.join(OUT_DIR, "kaomoji-index.json"), kaomojiJson, "utf-8");
   fs.writeFileSync(path.join(OUT_DIR, "search-index.json"), searchJson, "utf-8");
+
   console.log(
-    `   ✓ search-index.json (${(Buffer.byteLength(searchJson) / 1024).toFixed(1)} KB — lazy-loaded on search interaction)`
+    `   ✓ emoji-index.json (${(Buffer.byteLength(emojiJson) / 1024).toFixed(1)} KB — lazy-loaded by homepage)`
+  );
+  console.log(
+    `   ✓ symbols-index.json (${(Buffer.byteLength(symbolsJson) / 1024).toFixed(1)} KB)`
+  );
+  console.log(
+    `   ✓ kaomoji-index.json (${(Buffer.byteLength(kaomojiJson) / 1024).toFixed(1)} KB)`
+  );
+  console.log(
+    `   ✓ search-index.json (${(Buffer.byteLength(searchJson) / 1024).toFixed(1)} KB — combined)`
   );
 
   // ── Write categories ──────────────────────────────────────────

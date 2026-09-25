@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description: "About CopyPaste Unicode — the fastest way to find and copy emoji and symbols.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

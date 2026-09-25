@@ -5,7 +5,7 @@
 /**
  * Character types supported by the platform.
  */
-export type CharacterType = "emoji" | "symbol";
+export type CharacterType = "emoji" | "symbol" | "kaomoji";
 
 /**
  * A single character item — the fundamental data unit.

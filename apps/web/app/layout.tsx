@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -37,12 +36,14 @@ export const metadata: Metadata = {
     title: "CopyPaste Unicode — Emoji & Symbols Copy Paste",
     description:
       "Search, discover, and copy emojis, symbols, and Unicode characters. One click to copy and paste anywhere.",
+    images: [{ url: "/opengraph-image" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "CopyPaste Unicode — Emoji & Symbols Copy Paste",
     description:
       "Search, discover, and copy emojis, symbols, and Unicode characters. One click to copy.",
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -56,15 +57,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <ThemeProvider>
-          <div className="min-h-dvh flex flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <div className="min-h-dvh flex flex-col">
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "CopyPaste Unicode",
+              url: "https://copypaste-unicode.com",
+              description:
+                "Search, discover, and copy emojis, symbols, and Unicode characters.",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate:
+                    "https://copypaste-unicode.com/search?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </body>
     </html>
   );

@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "Privacy policy for CopyPaste Unicode.",
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: true },
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {
@@ -11,7 +14,7 @@ export default function PrivacyPage() {
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Privacy Policy</h1>
       <div className="text-sm leading-relaxed space-y-4 text-muted-foreground">
-        <p><strong className="text-foreground">Last updated:</strong> {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+        <p><strong className="text-foreground">Last updated:</strong> <time dateTime="2026-09-22">September 22, 2026</time></p>
 
         <h2 className="text-base font-semibold text-foreground mt-6">Data We Collect</h2>
         <p>CopyPaste Unicode does not collect personal data. We do not require accounts, and we do not use tracking cookies.</p>

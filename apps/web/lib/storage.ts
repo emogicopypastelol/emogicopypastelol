@@ -1,23 +1,30 @@
 /**
- * localStorage wrapper with bounded storage, error handling,
- * and graceful degradation for private browsing / quota exceeded.
+ * localStorage wrapper for CopyPaste Unicode platform.
+ * Bounded storage, error handling, and graceful degradation
+ * for private browsing and quota limits.
  */
 
-import type { RecentItem, TrayItem } from "@repo/types";
+import type { TrayItem } from "@repo/types";
 
 const STORAGE_PREFIX = "copypaste:";
-const MAX_RECENT = 100;
-const MAX_FAVORITES = 500;
+const MAX_TRAY_ITEMS = 200;
+
+let storageAvailable: boolean | null = null;
 
 function isAvailable(): boolean {
+  if (storageAvailable !== null) return storageAvailable;
+  if (typeof window === "undefined" || typeof localStorage === "undefined") {
+    return false;
+  }
   try {
     const testKey = "__storage_test__";
     localStorage.setItem(testKey, "1");
     localStorage.removeItem(testKey);
-    return true;
+    storageAvailable = true;
   } catch {
-    return false;
+    storageAvailable = false;
   }
+  return storageAvailable;
 }
 
 function getItem<T>(key: string, fallback: T): T {
@@ -40,85 +47,31 @@ function setItem<T>(key: string, value: T): void {
   }
 }
 
-// ── Recent Items ──────────────────────────────────────────────
-
-export function getRecentItems(): RecentItem[] {
-  return getItem<RecentItem[]>("recent", []);
-}
-
-export function addRecentItem(item: Omit<RecentItem, "timestamp">): void {
-  const recent = getRecentItems();
-  // Remove existing duplicate
-  const filtered = recent.filter((r) => r.id !== item.id);
-  // Add to front
-  filtered.unshift({ ...item, timestamp: Date.now() });
-  // Trim to max
-  setItem("recent", filtered.slice(0, MAX_RECENT));
-}
-
-export function clearRecentItems(): void {
-  setItem("recent", []);
-}
-
-// ── Favorites ─────────────────────────────────────────────────
-
-export function getFavorites(): string[] {
-  return getItem<string[]>("favorites", []);
-}
-
-export function isFavorite(id: string): boolean {
-  return getFavorites().includes(id);
-}
-
-export function toggleFavorite(id: string): boolean {
-  const favorites = getFavorites();
-  const index = favorites.indexOf(id);
-
-  if (index >= 0) {
-    favorites.splice(index, 1);
-    setItem("favorites", favorites);
-    return false; // Removed
-  } else {
-    if (favorites.length >= MAX_FAVORITES) {
-      favorites.pop(); // Remove oldest
-    }
-    favorites.unshift(id);
-    setItem("favorites", favorites);
-    return true; // Added
-  }
-}
-
-// ── Emoji Tray ────────────────────────────────────────────────
+// ── Emoji Tray / Copy Bar Storage ─────────────────────────────
 
 export function getTrayItems(): TrayItem[] {
   return getItem<TrayItem[]>("tray", []);
 }
 
 export function setTrayItems(items: TrayItem[]): void {
-  setItem("tray", items);
+  setItem("tray", items.slice(0, MAX_TRAY_ITEMS));
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("copypaste:tray-updated", { detail: items }));
   }
 }
 
 export function addTrayItem(item: TrayItem): TrayItem[] {
-  const tray = getTrayItems();
-  tray.push(item);
-  setItem("tray", tray);
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("copypaste:tray-updated", { detail: tray }));
-  }
-  return tray;
+  const current = getTrayItems();
+  const updated = [...current, item].slice(0, MAX_TRAY_ITEMS);
+  setTrayItems(updated);
+  return updated;
 }
 
 export function removeTrayItem(index: number): TrayItem[] {
-  const tray = getTrayItems();
-  tray.splice(index, 1);
-  setItem("tray", tray);
-  if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("copypaste:tray-updated", { detail: tray }));
-  }
-  return tray;
+  const current = getTrayItems();
+  const updated = current.filter((_, i) => i !== index);
+  setTrayItems(updated);
+  return updated;
 }
 
 export function clearTray(): void {
@@ -126,14 +79,4 @@ export function clearTray(): void {
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("copypaste:tray-updated", { detail: [] }));
   }
-}
-
-// ── Theme ─────────────────────────────────────────────────────
-
-export function getStoredTheme(): string {
-  return getItem<string>("theme", "system");
-}
-
-export function setStoredTheme(theme: string): void {
-  setItem("theme", theme);
 }

@@ -3,6 +3,7 @@
 // ============================================================
 
 export { symbols } from "./symbols";
+export { kaomoji } from "./kaomoji";
 export { transformEmojiData } from "./emoji";
 export {
   adaptUnicodeEmojiData,
@@ -13,6 +14,7 @@ export {
 export {
   emojiCategories,
   symbolCategories,
+  kaomojiCategories,
   allCategories,
 } from "./categories";
 

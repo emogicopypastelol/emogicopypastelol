@@ -11,8 +11,20 @@ import { CategoryView } from "./CategoryView";
 
 // Generate static params for all 9 emoji categories + all 1,914 emoji items
 export async function generateStaticParams() {
+  const categorySlugs = new Set(emojiCategories.map((cat) => cat.slug));
   const categoryParams = emojiCategories.map((cat) => ({ slug: cat.slug }));
-  const emojiParams = getAllEmoji().map((item) => ({ slug: item.slug }));
+
+  // Invariant guard: ensure no emoji slug silently conflicts with an emoji category slug
+  const emojiParams: { slug: string }[] = [];
+  for (const item of getAllEmoji()) {
+    if (categorySlugs.has(item.slug)) {
+      throw new Error(
+        `[Routing Invariant] Collision detected: emoji slug "${item.slug}" conflicts with category slug "${item.slug}".`
+      );
+    }
+    emojiParams.push({ slug: item.slug });
+  }
+
   return [...categoryParams, ...emojiParams];
 }
 
@@ -110,25 +122,53 @@ export default async function EmojiOrCategoryPage({
     .slice(0, 30);
 
   // Schema.org JSON-LD
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "DefinedTerm",
-    name: `${emoji.character} ${emoji.name}`,
-    description: `The ${emoji.name} emoji (${emoji.character}) categorized under ${emoji.category}.`,
-    termCode: emoji.unicode?.join(" ") ?? "",
-    inDefinedTermSet: {
-      "@type": "DefinedTermSet",
-      name: "Unicode Standard",
+  const emojiCategory = emojiCategories.find((c) => c.slug === emoji.category);
+  const categoryName = emojiCategory?.name ?? emoji.category.replace(/-/g, " ");
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
+        { "@type": "ListItem", position: 2, name: "Emoji", item: "https://copypaste-unicode.com/emoji" },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: categoryName,
+          item: `https://copypaste-unicode.com/emoji/${emoji.category}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: emoji.name,
+          item: `https://copypaste-unicode.com/emoji/${emoji.slug}`,
+        },
+      ],
     },
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "DefinedTerm",
+      name: `${emoji.character} ${emoji.name}`,
+      description: `The ${emoji.name} emoji (${emoji.character}) categorized under ${emoji.category}.`,
+      termCode: emoji.unicode?.join(" ") ?? "",
+      inDefinedTermSet: {
+        "@type": "DefinedTermSet",
+        name: "Unicode Standard",
+      },
+    },
+  ];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="content-shell mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
       {/* JSON-LD for rich snippets */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {jsonLd.map((schema, index) => (
+        <script
+          key={`${schema["@type"]}-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
       {/* Breadcrumbs */}
       <nav
@@ -181,6 +221,31 @@ export default async function EmojiOrCategoryPage({
           To copy this emoji, click the green &ldquo;Copy Emoji&rdquo; button above or tap directly on the character. You can then paste it into any text message, social media post (X / Twitter, Instagram, TikTok), document, or code file.
         </p>
       </section>
+
+      {/* Internal Cross-Links — distributes link equity to symbols & kaomoji sections */}
+      <nav className="mt-10 pt-6 border-t border-border" aria-label="Explore more character categories">
+        <h2 className="text-base font-semibold text-foreground mb-3">Explore More</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+          <Link href="/symbols/hearts" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="emoji-char text-lg">♥</span> Heart Symbols
+          </Link>
+          <Link href="/symbols/stars" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="emoji-char text-lg">★</span> Star Symbols
+          </Link>
+          <Link href="/symbols/arrows" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="emoji-char text-lg">→</span> Arrow Symbols
+          </Link>
+          <Link href="/kaomoji" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="text-base">ʕ•ᴥ•ʔ</span> Kaomoji
+          </Link>
+          <Link href="/symbols" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="emoji-char text-lg">∑</span> All Symbols
+          </Link>
+          <Link href="/emoji" className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border hover:border-primary/40 hover:bg-card-hover transition-all text-sm font-medium">
+            <span className="emoji-char text-lg">😀</span> All Emoji
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }

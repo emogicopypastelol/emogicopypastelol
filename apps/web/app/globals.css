@@ -166,7 +166,7 @@ body {
 .homepage-center {
   flex: 1;
   min-width: 0;
-  max-width: 720px;
+  max-width: 820px;
   width: 100%;
   padding: 0 0.25rem;
 }
@@ -177,23 +177,146 @@ body {
   }
 }
 
-/* ── Character Grid ────────────────────────────────────────── */
+/* ── Category Page Sections ───────────────────────────────── */
+.category-hero {
+  box-shadow: var(--shadow-sm);
+}
+
+.content-shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.content-shell .category-tool-search {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.content-shell .category-tool-tray {
+  position: relative;
+  top: auto;
+  z-index: 1;
+  padding: 0.5rem 0;
+}
+
+.content-shell .category-tool-tray > div {
+  max-width: 44rem;
+  height: 3rem;
+}
+
+.content-section {
+  min-width: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-heading h2 {
+  color: var(--color-foreground);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.section-heading p {
+  color: var(--color-muted-foreground);
+  font-size: 0.8125rem;
+  margin-top: 0.2rem;
+}
+
+.section-count {
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.emoji-gallery {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.emoji-table-wrap {
+  overflow: auto;
+  max-height: 42rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-card);
+}
+
+.emoji-table-wrap table {
+  min-width: 34rem;
+}
+
+.emoji-table-wrap thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-muted);
+}
+
+.emoji-table-wrap th {
+  color: var(--color-muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.7rem 0.85rem;
+  text-transform: uppercase;
+}
+
+.emoji-table-wrap td {
+  padding: 0.45rem 0.85rem;
+  vertical-align: middle;
+}
+
+.emoji-table-wrap tbody tr:last-child {
+  border-bottom: 0;
+}
+
+@media (max-width: 639px) {
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .emoji-gallery {
+    padding: 0.5rem;
+  }
+}
+
+/* ── Character Grid (12 emojis per row on desktop) ────────── */
 .character-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
 }
 
 @media (min-width: 640px) {
   .character-grid {
-    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     gap: 6px;
+  }
+}
+
+@media (min-width: 768px) {
+  .character-grid {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
   .character-grid {
-    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 6px;
   }
 }
@@ -204,9 +327,12 @@ body {
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
+  content-visibility: auto;
+  contain: layout paint style;
+  contain-intrinsic-size: auto 3rem auto 3rem;
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease;
   font-size: 1.75rem;
   user-select: none;
   position: relative;
@@ -244,6 +370,62 @@ body {
   transform: scale(1.1);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
+
+/* ── Twemoji Emoji Image Fallback ───────────────────────────── */
+.twemoji-emoji-img {
+  width: 1.35em;
+  height: 1.35em;
+  display: inline-block;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+/* ── Kaomoji Grid & Cell ────────────────────────────────────── */
+.kaomoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .kaomoji-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+}
+
+.kaomoji-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 0.95rem;
+  font-family: var(--font-sans);
+  user-select: none;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kaomoji-cell:hover {
+  background-color: var(--color-muted);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.kaomoji-cell:active {
+  transform: scale(0.98);
+}
+
 
 /* ── Copy Feedback ─────────────────────────────────────────── */
 .copy-feedback {
@@ -326,7 +508,7 @@ body {
   height: 36px;
   border-radius: var(--radius-full);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, background-color 0.15s ease;
   color: var(--color-muted-foreground);
   flex-shrink: 0;
 }
@@ -356,7 +538,7 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-size: 0.9375rem;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
 }
 
@@ -389,7 +571,7 @@ body {
   color: var(--color-muted-foreground);
   font-size: 0.75rem;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .ad-slot-sidebar {
@@ -424,4 +606,16 @@ body {
 
 .animate-slide-up {
   animation: slide-up 0.3s ease;
+}
+
+/* ── Mega Menu Open Animation ─────────────────────────────── */
+@keyframes megamenu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

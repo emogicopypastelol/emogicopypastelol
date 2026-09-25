@@ -1,42 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { emojiCategories } from "@repo/data";
+import { kaomojiCategories, kaomoji } from "@repo/data";
 import { CategoryIcon } from "@/components/CategoryIcon";
-import { getEmojiByCategory } from "@/lib/data";
 import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = {
-  title: "Emoji Copy and Paste ❤️ 😀 🔥 — All Emoji Categories",
+  title: "Kaomoji Copy and Paste ¯\\_(ツ)_/¯ (◕‿◕✿) (╯°□°)╯ — Japanese Emoticons",
   description:
-    "Browse and copy all emoji organized by category. Smileys, hearts, animals, food, travel, activities, objects, symbols and flags. One click to copy and paste anywhere.",
+    "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces. One click to copy and paste.",
   openGraph: {
-    title: "Emoji Copy and Paste — All Emoji Categories",
+    title: "Kaomoji Copy and Paste — Japanese Emoticons",
     description:
-      "Browse and copy all emoji organized by category. Smileys, hearts, animals, food, travel, activities, objects, symbols and flags.",
+      "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
     type: "website",
-    url: "https://copypaste-unicode.com/emoji",
+    url: "https://copypaste-unicode.com/kaomoji",
     images: [{ url: "/opengraph-image" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Emoji Copy and Paste — All Emoji Categories",
+    title: "Kaomoji Copy and Paste — Japanese Emoticons",
     description:
-      "Browse and copy all emoji organized by category. Smileys, hearts, animals, food, travel, activities, objects, symbols and flags.",
+      "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
     images: ["/opengraph-image"],
   },
   alternates: {
-    canonical: "https://copypaste-unicode.com/emoji",
+    canonical: "https://copypaste-unicode.com/kaomoji",
   },
 };
 
-export default function EmojiPage() {
-  const categoriesWithPreview = emojiCategories.map((cat) => {
-    const items = getEmojiByCategory(cat.slug);
+export default function KaomojiIndexPage() {
+  const categoriesWithPreview = kaomojiCategories.map((cat) => {
+    const items = kaomoji.filter((k) => k.category === cat.slug);
     return {
       ...cat,
       count: items.length,
-      preview: items.slice(0, 8),
+      preview: items.slice(0, 4),
     };
   });
 
@@ -46,19 +45,19 @@ export default function EmojiPage() {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Emoji", item: "https://copypaste-unicode.com/emoji" },
+        { "@type": "ListItem", position: 2, name: "Kaomoji", item: "https://copypaste-unicode.com/kaomoji" },
       ],
     },
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Emoji Categories",
-      numberOfItems: emojiCategories.length,
-      itemListElement: emojiCategories.map((cat, index) => ({
+      name: "Kaomoji Categories",
+      numberOfItems: kaomojiCategories.length,
+      itemListElement: kaomojiCategories.map((cat, index) => ({
         "@type": "ListItem",
         position: index + 1,
         name: cat.name,
-        url: `https://copypaste-unicode.com/emoji/${cat.slug}`,
+        url: `https://copypaste-unicode.com/kaomoji/${cat.slug}`,
       })),
     },
   ];
@@ -81,23 +80,24 @@ export default function EmojiPage() {
           Home
         </Link>
         <ChevronRight size={12} />
-        <span className="text-foreground font-medium">Emoji</span>
+        <span className="text-foreground font-medium">Kaomoji</span>
       </nav>
 
       <h1 className="text-2xl sm:text-3xl font-bold mb-2">
-        Emoji Copy and Paste
+        Kaomoji Copy and Paste ( Japanese Emoticons )
       </h1>
       <p className="text-muted-foreground mb-8">
-        Browse all emoji organized by category. Select a category below to view and copy all its emoji, or search for any emoji above.
+        Browse authentic Japanese text emoticons (顔文字) organized by emotion and style.
+        Click any category to explore and copy full sets, or click any face to copy instantly.
       </p>
 
-      {/* Category Cards with Preview Emojis */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Category Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {categoriesWithPreview.map((cat) => (
           <Link
             key={cat.slug}
-            href={`/emoji/${cat.slug}`}
-            className="flex flex-col justify-between p-5 rounded-xl border border-border hover:border-primary/40 hover:bg-card-hover transition-all group"
+            href={`/kaomoji/${cat.slug}`}
+            className="flex flex-col justify-between p-5 rounded-xl border border-border hover:border-primary/40 hover:bg-card-hover transition-all group shadow-sm hover:shadow"
           >
             <div>
               <div className="flex items-start gap-3.5">
@@ -112,29 +112,28 @@ export default function EmojiPage() {
                     <h2 className="text-base font-semibold group-hover:text-primary transition-colors truncate">
                       {cat.name}
                     </h2>
-                    <span className="text-xs text-muted-foreground font-mono bg-muted/50 px-2 py-0.5 rounded-full shrink-0 ml-2">
+                    <span className="text-xs text-muted-foreground font-mono bg-muted/60 px-2 py-0.5 rounded-full shrink-0 ml-2">
                       {cat.count}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                  <p className="text-sm text-muted-foreground mt-1">
                     {cat.description}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Preview characters rendered as static HTML */}
-            <div className="flex items-center gap-1.5 mt-4 pt-3 border-t border-border/50 text-xl emoji-char">
+            {/* Preview kaomojis */}
+            <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-border/50 text-sm">
               {cat.preview.map((item) => (
-                <span key={item.id} title={item.name}>
+                <span
+                  key={item.id}
+                  className="px-2.5 py-1 rounded-md bg-secondary/80 text-foreground font-sans text-xs border border-border/60"
+                  title={item.name}
+                >
                   {item.character}
                 </span>
               ))}
-              {cat.count > 8 && (
-                <span className="text-xs text-muted-foreground font-sans ml-1">
-                  +{cat.count - 8}
-                </span>
-              )}
             </div>
           </Link>
         ))}
@@ -145,16 +144,16 @@ export default function EmojiPage() {
         <AdSlot type="banner" />
       </div>
 
-      {/* SEO Content */}
+      {/* SEO Explanatory Content */}
       <section className="mt-12 text-sm text-muted-foreground leading-relaxed space-y-3">
         <h2 className="text-base font-semibold text-foreground">
-          About Unicode Emoji
+          What are Kaomoji?
         </h2>
         <p>
-          Emoji are standardized pictographs and ideograms used in electronic messages and web pages. They are part of the Unicode Standard, which ensures that an emoji sent from an iPhone or Mac appears correctly on Android devices, Windows PCs, and Linux systems.
+          <strong>Kaomoji (顔文字)</strong> are popular Japanese emoticons made of Japanese characters and grammar punctuations. Unlike western emoticons which are read sideways (e.g. <code>:)</code> or <code>:D</code>), kaomoji are designed to be viewed upright and read without tilting your head.
         </p>
         <p>
-          Our emoji directory organizes all modern emoji into standardized categories: Smileys &amp; Emotion, People &amp; Body, Animals &amp; Nature, Food &amp; Drink, Travel &amp; Places, Activities, Objects, Symbols, and Flags. Click on any category to explore the complete list and copy individual emoji with a single click.
+          Kaomoji convey a vast range of expressions, from cute kawaii gestures like <code>(◕‿◕✿)</code> to classic internet memes like the shrug <code>¯\_(ツ)_/¯</code> and table flip <code>(╯°□°)╯︵ ┻━┻</code>.
         </p>
       </section>
     </div>

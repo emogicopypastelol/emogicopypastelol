@@ -5,7 +5,7 @@
     "type": "emoji",
     "icon": "smile",
     "description": "Smiley faces, emotions, and feelings emoji",
-    "count": 171
+    "count": 168
   },
   {
     "slug": "people-body",
@@ -13,7 +13,7 @@
     "type": "emoji",
     "icon": "user",
     "description": "People, hand gestures, and body parts emoji",
-    "count": 388
+    "count": 385
   },
   {
     "slug": "animals-nature",
@@ -21,7 +21,7 @@
     "type": "emoji",
     "icon": "cat",
     "description": "Animals, plants, and nature emoji",
-    "count": 160
+    "count": 158
   },
   {
     "slug": "food-drink",
@@ -29,7 +29,7 @@
     "type": "emoji",
     "icon": "apple",
     "description": "Food, drinks, and cooking emoji",
-    "count": 131
+    "count": 130
   },
   {
     "slug": "travel-places",
@@ -37,7 +37,7 @@
     "type": "emoji",
     "icon": "plane",
     "description": "Travel, places, and transportation emoji",
-    "count": 219
+    "count": 218
   },
   {
     "slug": "activities",
@@ -53,7 +53,7 @@
     "type": "emoji",
     "icon": "lightbulb",
     "description": "Objects, tools, and things emoji",
-    "count": 266
+    "count": 262
   },
   {
     "slug": "symbols",
@@ -61,7 +61,7 @@
     "type": "emoji",
     "icon": "hash",
     "description": "Symbols, signs, and marks emoji",
-    "count": 224
+    "count": 223
   },
   {
     "slug": "flags",
@@ -69,7 +69,7 @@
     "type": "emoji",
     "icon": "flag",
     "description": "Country and regional flags emoji",
-    "count": 270
+    "count": 269
   },
   {
     "slug": "hearts",
@@ -174,5 +174,69 @@
     "icon": "sparkles",
     "description": "Copy and paste miscellaneous symbols and special characters",
     "count": 17
+  },
+  {
+    "slug": "happy",
+    "name": "Happy & Smiling",
+    "type": "kaomoji",
+    "icon": "smile",
+    "description": "Copy and paste happy Japanese kaomoji emoticons and joyful text faces",
+    "count": 15
+  },
+  {
+    "slug": "love",
+    "name": "Love & Hugs",
+    "type": "kaomoji",
+    "icon": "heart",
+    "description": "Copy and paste love kaomojis, heart eyes, kissing faces, and romantic emoticons",
+    "count": 12
+  },
+  {
+    "slug": "cute",
+    "name": "Cute & Kawaii",
+    "type": "kaomoji",
+    "icon": "sparkles",
+    "description": "Copy and paste cute kawaii Japanese text faces, sweet expressions, and waving emoticons",
+    "count": 12
+  },
+  {
+    "slug": "shrug",
+    "name": "Shrug & Meh",
+    "type": "kaomoji",
+    "icon": "help-circle",
+    "description": "Copy and paste shrug kaomojis like ¯\\_(ツ)_/¯ and carefree text expressions",
+    "count": 9
+  },
+  {
+    "slug": "sad",
+    "name": "Sad & Crying",
+    "type": "kaomoji",
+    "icon": "frown",
+    "description": "Copy and paste sad kaomojis, crying tears, weeping faces, and heartbroken text emoticons",
+    "count": 9
+  },
+  {
+    "slug": "angry",
+    "name": "Angry & Table Flip",
+    "type": "kaomoji",
+    "icon": "flame",
+    "description": "Copy and paste angry kaomojis, table flip (╯°□°)╯︵ ┻━┻, and furious text emoticons",
+    "count": 9
+  },
+  {
+    "slug": "animals",
+    "name": "Animals & Bears",
+    "type": "kaomoji",
+    "icon": "paw-print",
+    "description": "Copy and paste animal kaomojis including bears, cats, puppies, and rabbits",
+    "count": 12
+  },
+  {
+    "slug": "action",
+    "name": "Action & Cool",
+    "type": "kaomoji",
+    "icon": "glasses",
+    "description": "Copy and paste cool sunglasses kaomojis (⌐■_■), lenny faces, and action emoticons",
+    "count": 11
   }
 ]

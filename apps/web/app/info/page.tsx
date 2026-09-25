@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Site Information & Directory",
   description:
     "Complete directory, site map, legal information, and advertising details for CopyPaste Unicode.",
+  alternates: {
+    canonical: "/info",
+  },
 };
 
 export default function InfoPage() {
@@ -186,10 +189,10 @@ export default function InfoPage() {
         </p>
       </section>
 
-      {/* Footer copyright */}
-      <footer className="border-t border-border pt-6 text-xs text-muted-foreground">
+      {/* Copyright footnote */}
+      <div className="border-t border-border pt-6 text-xs text-muted-foreground">
         <p>© {new Date().getFullYear()} CopyPaste Unicode. All characters are part of the Unicode Standard.</p>
-      </footer>
+      </div>
     </div>
   );
 }

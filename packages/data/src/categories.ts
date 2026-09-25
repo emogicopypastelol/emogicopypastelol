@@ -177,8 +177,69 @@ export const symbolCategories: Category[] = [
   },
 ];
 
+export const kaomojiCategories: Category[] = [
+  {
+    slug: "happy",
+    name: "Happy & Smiling",
+    type: "kaomoji",
+    icon: "smile",
+    description: "Copy and paste happy Japanese kaomoji emoticons and joyful text faces",
+  },
+  {
+    slug: "love",
+    name: "Love & Hugs",
+    type: "kaomoji",
+    icon: "heart",
+    description: "Copy and paste love kaomojis, heart eyes, kissing faces, and romantic emoticons",
+  },
+  {
+    slug: "cute",
+    name: "Cute & Kawaii",
+    type: "kaomoji",
+    icon: "sparkles",
+    description: "Copy and paste cute kawaii Japanese text faces, sweet expressions, and waving emoticons",
+  },
+  {
+    slug: "shrug",
+    name: "Shrug & Meh",
+    type: "kaomoji",
+    icon: "help-circle",
+    description: "Copy and paste shrug kaomojis like ¯\\_(ツ)_/¯ and carefree text expressions",
+  },
+  {
+    slug: "sad",
+    name: "Sad & Crying",
+    type: "kaomoji",
+    icon: "frown",
+    description: "Copy and paste sad kaomojis, crying tears, weeping faces, and heartbroken text emoticons",
+  },
+  {
+    slug: "angry",
+    name: "Angry & Table Flip",
+    type: "kaomoji",
+    icon: "flame",
+    description: "Copy and paste angry kaomojis, table flip (╯°□°)╯︵ ┻━┻, and furious text emoticons",
+  },
+  {
+    slug: "animals",
+    name: "Animals & Bears",
+    type: "kaomoji",
+    icon: "paw-print",
+    description: "Copy and paste animal kaomojis including bears, cats, puppies, and rabbits",
+  },
+  {
+    slug: "action",
+    name: "Action & Cool",
+    type: "kaomoji",
+    icon: "glasses",
+    description: "Copy and paste cool sunglasses kaomojis (⌐■_■), lenny faces, and action emoticons",
+  },
+];
+
 export const allCategories: Category[] = [
   ...emojiCategories,
   ...symbolCategories,
+  ...kaomojiCategories,
 ];
+
 

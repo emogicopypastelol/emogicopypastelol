@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Copy, Check, Share2, Code } from "lucide-react";
+import { Copy, Check, Code } from "lucide-react";
 import type { CharacterItem } from "@repo/types";
 import { copyToClipboard } from "@/lib/clipboard";
-import { addRecentItem, addTrayItem } from "@/lib/storage";
-import { isFlagEmoji, getTwemojiUrl } from "@/lib/flags";
+import { addTrayItem } from "@/lib/storage";
+import { isFlagEmoji, shouldRenderTwemoji, getTwemojiUrl } from "@/lib/flags";
 
 export function EmojiDetailClient({
   emoji,
@@ -21,11 +21,6 @@ export function EmojiDetailClient({
       if (type === "char") {
         addTrayItem({ character: emoji.character, id: emoji.id });
       }
-      addRecentItem({
-        character: emoji.character,
-        name: emoji.name,
-        id: emoji.id,
-      });
       setTimeout(() => setCopiedType(null), 1500);
     },
     [emoji]
@@ -35,6 +30,7 @@ export function EmojiDetailClient({
   const unicodeStr = emoji.unicode?.join(" ") ?? "";
   const shortcode = `:${emoji.slug.replace(/-/g, "_")}:`;
   const isFlag = isFlagEmoji(emoji.character, emoji.category);
+  const useSvg = shouldRenderTwemoji(emoji.character, emoji.category);
 
   return (
     <div className="space-y-8">
@@ -47,7 +43,7 @@ export function EmojiDetailClient({
           title={`Click to copy ${emoji.character}`}
           type="button"
         >
-          {isFlag ? (
+          {useSvg ? (
             <img
               src={getTwemojiUrl(emoji.character)}
               alt={emoji.name}
@@ -70,20 +66,23 @@ export function EmojiDetailClient({
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
               {emoji.name}
             </h1>
-            <p className="text-muted-foreground text-sm font-mono mt-0.5">
-              {unicodeStr} • {emoji.category}
+            <p className="text-muted-foreground text-sm mt-1">
+              <span className="font-mono">{unicodeStr}</span>
+              <span className="mx-1.5 text-border">•</span>
+              <span className="capitalize">{emoji.category.replace(/-/g, " ")}</span>
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1.5">
             {/* Primary Copy Button */}
             <button
               onClick={() => handleCopy(emoji.character, "char")}
-              className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-150 flex items-center gap-2 shadow-sm ${
+              className={`h-10 px-4 rounded-xl font-semibold text-sm transition-all duration-150 flex items-center gap-2 shadow-sm whitespace-nowrap ${
                 copiedType === "char"
                   ? "bg-emerald-600 text-white scale-95"
                   : "bg-emerald-500 hover:bg-emerald-600 text-white hover:shadow"
               }`}
+              aria-label={`Copy ${emoji.name} emoji`}
               type="button"
             >
               {copiedType === "char" ? (
@@ -102,22 +101,30 @@ export function EmojiDetailClient({
             {/* Copy Shortcode */}
             <button
               onClick={() => handleCopy(shortcode, "shortcode")}
-              className="px-3.5 py-2 rounded-full border border-border hover:bg-muted text-xs font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+              className="h-10 min-w-33 px-3 rounded-xl border border-border bg-background hover:bg-muted text-left transition-colors flex flex-col justify-center gap-0.5"
               title={`Copy shortcode: ${shortcode}`}
+              aria-label={`Copy shortcode ${shortcode}`}
               type="button"
             >
-              <Code size={13} />
-              <span>{copiedType === "shortcode" ? "Copied!" : shortcode}</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Shortcode</span>
+              <span className="flex items-center gap-1.5 text-xs font-mono text-foreground">
+                <Code size={12} />
+                {copiedType === "shortcode" ? "Copied" : shortcode}
+              </span>
             </button>
 
             {/* Copy Codepoint */}
             <button
               onClick={() => handleCopy(unicodeStr, "unicode")}
-              className="px-3.5 py-2 rounded-full border border-border hover:bg-muted text-xs font-mono text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+              className="h-10 min-w-29 px-3 rounded-xl border border-border bg-background hover:bg-muted text-left transition-colors flex flex-col justify-center gap-0.5"
               title={`Copy codepoint: ${unicodeStr}`}
+              aria-label={`Copy Unicode codepoint ${unicodeStr}`}
               type="button"
             >
-              <span>{copiedType === "unicode" ? "Copied!" : unicodeStr}</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Unicode</span>
+              <span className="text-xs font-mono text-foreground">
+                {copiedType === "unicode" ? "Copied" : unicodeStr}
+              </span>
             </button>
           </div>
         </div>

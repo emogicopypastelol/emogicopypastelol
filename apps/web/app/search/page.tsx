@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { SearchPageClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Search — CopyPaste Unicode",
+  title: "Search",
   description: "Search for emoji, symbols, and Unicode characters.",
   robots: { index: false, follow: true },
+  alternates: { canonical: "/search" },
 };
 
 export default function SearchPage() {

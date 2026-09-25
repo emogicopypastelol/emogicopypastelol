@@ -2,15 +2,16 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border mt-16">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-sm">
+    <footer className="border-t border-border bg-[#fafafa]">
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm">
           {/* Categories */}
           <div>
             <h3 className="font-semibold text-foreground mb-3">Categories</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li><Link href="/emoji" className="hover:text-foreground transition-colors">Emoji</Link></li>
               <li><Link href="/symbols" className="hover:text-foreground transition-colors">Symbols</Link></li>
+              <li><Link href="/kaomoji" className="hover:text-foreground transition-colors">Kaomoji</Link></li>
             </ul>
           </div>
 
@@ -34,7 +35,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* About & Legal */}
           <div>
             <h3 className="font-semibold text-foreground mb-3">About</h3>
             <ul className="space-y-2 text-muted-foreground">
