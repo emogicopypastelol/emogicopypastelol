@@ -37,6 +37,7 @@ export function EmojiCategoryPillNav() {
         <div className="emoji-category-strip__items">
           {emojiCategories.map((category) => {
             const style = CATEGORY_STYLE[category.slug];
+            if (!style) return null;
             const Icon = style.icon;
 
             return (
