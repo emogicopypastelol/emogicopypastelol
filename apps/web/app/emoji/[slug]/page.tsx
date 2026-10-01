@@ -8,6 +8,7 @@ import { EmojiDetailClient } from "./client";
 import { StaticCharacterGrid } from "@/components/StaticCharacterGrid";
 import { AdSlot } from "@/components/AdSlot";
 import { CategoryView } from "./CategoryView";
+import { EMOJI_CATEGORY_PAGE_SIZE } from "@/lib/emojiPagination";
 
 // Generate static params for all 9 emoji categories + all 1,914 emoji items
 export async function generateStaticParams() {
@@ -109,7 +110,16 @@ export default async function EmojiOrCategoryPage({
   const cat = emojiCategories.find((c) => c.slug === slug);
   if (cat) {
     const items = getEmojiByCategory(slug);
-    return <CategoryView category={cat} items={items} />;
+    return (
+      <CategoryView
+        category={cat}
+        items={items.slice(0, EMOJI_CATEGORY_PAGE_SIZE)}
+        totalCount={items.length}
+        currentPage={1}
+        totalPages={Math.ceil(items.length / EMOJI_CATEGORY_PAGE_SIZE)}
+        startIndex={0}
+      />
+    );
   }
 
   // 2. If emoji matches, render emoji detail SSG view

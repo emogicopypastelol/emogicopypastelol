@@ -1,14 +1,14 @@
 import { ImageResponse } from "next/og";
+import { symbolCategories } from "@repo/data";
 
 export const runtime = "nodejs";
-
-export const alt = "CopyPaste Unicode — Search and copy emoji, symbols, and Unicode characters";
+export const alt = "Symbols — Copy and Paste";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OpenGraphImage() {
-  // Curated grid of popular characters shown on the root OG image
-  const sampleChars = ["😀", "❤️", "★", "→", "∞", "✓", "🎉", "♥", "©", "€", "√", "☀"];
+  const categoryNames = symbolCategories.map((c) => c.name).slice(0, 8);
+  const subtitle = `${categoryNames.join(" · ")} — 177 symbols, one click to copy.`;
 
   return new ImageResponse(
     (
@@ -25,7 +25,7 @@ export default function OpenGraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Logo row */}
+        {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
@@ -48,42 +48,16 @@ export default function OpenGraphImage() {
           </div>
         </div>
 
-        {/* Main content */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <div style={{ display: "flex", fontSize: "60px", fontWeight: 800, color: "#059669", lineHeight: 1.1 }}>
-            Emoji, Symbols &amp; Unicode
+        {/* Main */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div style={{ display: "flex", fontSize: "64px", fontWeight: 800, color: "#059669" }}>
+            Symbols Copy &amp; Paste
           </div>
-
-          {/* Character grid */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "12px",
-              fontSize: "44px",
-              letterSpacing: "4px",
-            }}
-          >
-            {sampleChars.map((char) => (
-              <div
-                key={char}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "68px",
-                  height: "68px",
-                  background: "#f0fdf4",
-                  borderRadius: "14px",
-                }}
-              >
-                {char}
-              </div>
-            ))}
+          <div style={{ display: "flex", fontSize: "56px", letterSpacing: "10px" }}>
+            ♥ ★ → ∞ © ✓ ∑ π
           </div>
-
-          <div style={{ display: "flex", fontSize: "26px", color: "#4b5563" }}>
-            Find it. Copy it. Paste it anywhere. — Free, no sign-up.
+          <div style={{ display: "flex", fontSize: "24px", color: "#6b7280" }}>
+            {subtitle}
           </div>
         </div>
 
@@ -97,7 +71,7 @@ export default function OpenGraphImage() {
             paddingTop: "20px",
           }}
         >
-          copypaste-unicode.com
+          copypaste-unicode.com/symbols
         </div>
       </div>
     ),

@@ -16,14 +16,12 @@ export const metadata: Metadata = {
       "Browse and copy all emoji organized by category. Smileys, hearts, animals, food, travel, activities, objects, symbols and flags.",
     type: "website",
     url: "https://copypaste-unicode.com/emoji",
-    images: [{ url: "/opengraph-image" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Emoji Copy and Paste — All Emoji Categories",
     description:
       "Browse and copy all emoji organized by category. Smileys, hearts, animals, food, travel, activities, objects, symbols and flags.",
-    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://copypaste-unicode.com/emoji",

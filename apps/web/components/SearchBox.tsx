@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect, type KeyboardEvent } from "react";
+import { useState, useRef, useCallback, useEffect, type KeyboardEvent, type ComponentType } from "react";
 import { Search, X, Loader2 } from "lucide-react";
 import type { CharacterItem, SearchResult, TrayItem } from "@repo/types";
-import { search } from "@repo/search";
-import { CharacterGrid } from "./CharacterGrid";
 import { loadSearchIndex, getCachedSearchIndex } from "@/lib/searchIndex";
+
+type CharacterGridComponent = ComponentType<{
+  items: CharacterItem[];
+  onAddToTray?: (item: TrayItem) => void;
+}>;
 
 /**
  * Global search box with client-side instant search.
- * Lazy-loads the minimal search index (~80 KB) only when the user
+ * Loads the search index only after the user
  * interacts with the input (focus or typing).
  */
 export function SearchBox({
@@ -28,8 +31,12 @@ export function SearchBox({
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoadingIndex, setIsLoadingIndex] = useState(false);
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingQueryRef = useRef<string>("");
+  const [GridComponent, setGridComponent] = useState<CharacterGridComponent | null>(null);
+  const gridLoadingRef = useRef(false);
+  const gridLoadedRef = useRef(false);
 
   // Trigger preload of search index
   const ensureIndexLoaded = useCallback(async (): Promise<CharacterItem[]> => {
@@ -55,13 +62,33 @@ export function SearchBox({
   }, [autoFocus, ensureIndexLoaded]);
 
   const performSearch = useCallback(
-    (value: string, items: CharacterItem[]) => {
+    async (value: string, items: CharacterItem[]) => {
       if (value.trim().length === 0) {
         setResults([]);
+        setIsLoadingSearch(false);
         return;
       }
-      const searchResults = search(items, value, 60);
-      setResults(searchResults);
+      setIsLoadingSearch(true);
+      try {
+        const { search } = await import("@repo/search");
+        if (pendingQueryRef.current !== value) return;
+        const searchResults = search(items, value, 60);
+        setResults(searchResults);
+        if (searchResults.length > 0 && !gridLoadedRef.current && !gridLoadingRef.current) {
+          gridLoadingRef.current = true;
+          try {
+            const gridModule = await import("./CharacterGrid");
+            gridLoadedRef.current = true;
+            setGridComponent(() => gridModule.CharacterGrid);
+          } finally {
+            gridLoadingRef.current = false;
+          }
+        }
+      } catch {
+        if (pendingQueryRef.current === value) setResults([]);
+      } finally {
+        if (pendingQueryRef.current === value) setIsLoadingSearch(false);
+      }
     },
     []
   );
@@ -73,17 +100,18 @@ export function SearchBox({
 
       if (value.trim().length === 0) {
         setResults([]);
+        setIsLoadingSearch(false);
         return;
       }
 
       const items = allItems || getCachedSearchIndex();
       if (items && items.length > 0) {
-        performSearch(value, items);
+        await performSearch(value, items);
       } else {
         const loadedItems = await ensureIndexLoaded();
         // Only run search if query hasn't changed while loading
         if (pendingQueryRef.current === value) {
-          performSearch(value, loadedItems);
+          await performSearch(value, loadedItems);
         }
       }
     },
@@ -99,6 +127,8 @@ export function SearchBox({
       if (query) {
         setQuery("");
         setResults([]);
+        pendingQueryRef.current = "";
+        setIsLoadingSearch(false);
       } else {
         onClose?.();
       }
@@ -115,7 +145,7 @@ export function SearchBox({
   return (
     <div className={`w-full ${className}`}>
       <div className="search-input-wrapper relative flex items-center">
-        {isLoadingIndex ? (
+        {isLoadingIndex || isLoadingSearch ? (
           <Loader2 className="search-icon animate-spin text-muted-foreground" size={18} />
         ) : (
           <Search className="search-icon" size={18} />
@@ -148,19 +178,19 @@ export function SearchBox({
       </div>
 
       {/* Results */}
-      {results.length > 0 && (
+      {results.length > 0 && GridComponent && (
         <div className="mt-4 animate-fade-in">
           <p className="text-sm text-muted-foreground mb-3">
             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
           </p>
-          <CharacterGrid
+          <GridComponent
             items={results.map((r) => r.item)}
             onAddToTray={onAddToTray}
           />
         </div>
       )}
 
-      {query && results.length === 0 && !isLoadingIndex && (
+      {query && results.length === 0 && !isLoadingIndex && !isLoadingSearch && (
         <div className="mt-6 text-center animate-fade-in">
           <p className="text-muted-foreground text-sm">
             No results for &ldquo;{query}&rdquo;

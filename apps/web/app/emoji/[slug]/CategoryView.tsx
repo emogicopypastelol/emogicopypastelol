@@ -4,12 +4,17 @@ import { emojiCategories } from "@repo/data";
 import type { CharacterItem, Category } from "@repo/types";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { StaticCharacterGrid } from "@/components/StaticCharacterGrid";
-import { HomePageClient } from "@/components/HomePage";
+import { SearchAndTrayBar } from "@/components/SearchAndTrayBar";
 import { AdSlot } from "@/components/AdSlot";
+import { emojiCategoryPagePath } from "@/lib/emojiPagination";
 
 interface CategoryViewProps {
   category: Category;
   items: CharacterItem[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  startIndex: number;
 }
 
 const CATEGORY_GUIDANCE: Record<string, string> = {
@@ -24,7 +29,7 @@ const CATEGORY_GUIDANCE: Record<string, string> = {
   flags: "Browse national and regional flag emoji for locations, languages, events, travel, and international conversations.",
 };
 
-export function CategoryView({ category: cat, items }: CategoryViewProps) {
+export function CategoryView({ category: cat, items, totalCount, currentPage, totalPages, startIndex }: CategoryViewProps) {
   const relatedCategories = emojiCategories.filter(
     (c) => c.slug !== cat.slug
   );
@@ -37,13 +42,13 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
         { "@type": "ListItem", position: 2, name: "Emoji", item: "https://copypaste-unicode.com/emoji" },
-        { "@type": "ListItem", position: 3, name: cat.name, item: pageUrl },
+        { "@type": "ListItem", position: 3, name: cat.name + (currentPage > 1 ? " — Page " + currentPage : ""), item: currentPage === 1 ? pageUrl : "https://copypaste-unicode.com" + emojiCategoryPagePath(cat.slug, currentPage) },
       ],
     },
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: `${cat.name} Emoji`,
+      name: cat.name + " Emoji — page " + currentPage + " of " + totalPages,
       numberOfItems: items.length,
       itemListElement: items.map((item, index) => ({
         "@type": "ListItem",
@@ -64,7 +69,7 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
         />
       ))}
       {/* Search & Interactive Copy Bar (EmojiTray) */}
-      <HomePageClient />
+      <SearchAndTrayBar />
 
       {/* Breadcrumbs */}
       <nav
@@ -93,7 +98,7 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
         <div className="min-w-0">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{cat.name} Emoji</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {cat.description} Click any emoji to copy it instantly. {items.length} emoji available.
+            {cat.description} Click any emoji to copy it instantly. {totalCount} emoji available.
           </p>
         </div>
       </header>
@@ -105,7 +110,7 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
             <h2 id="emoji-gallery-title">Browse {cat.name} emoji</h2>
             <p>Choose a character to copy it to your clipboard.</p>
           </div>
-          <span className="section-count">{items.length} characters</span>
+          <span className="section-count">Showing {startIndex + 1}–{startIndex + items.length} of {totalCount} characters</span>
         </div>
         <div className="emoji-gallery">
           <StaticCharacterGrid
@@ -155,7 +160,7 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
           About {cat.name} Emoji
         </h2>
         <p>
-          The <strong>{cat.name}</strong> category contains {items.length} emoji
+          The <strong>{cat.name}</strong> category contains {totalCount} emoji
           that are part of the Unicode Standard. These emoji work across all
           modern platforms including Apple iOS, macOS, Google Android, Windows,
           and Linux. Click any emoji above to copy it to your clipboard, then
@@ -170,9 +175,9 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
         <div className="section-heading">
           <div>
             <h2>
-          All {cat.name} Emoji List
+          {cat.name} Emoji on This Page
             </h2>
-            <p>Names and Unicode code points for every character in this category.</p>
+            <p>Names and Unicode code points for the characters on this page.</p>
           </div>
         </div>
         <div className="emoji-table-wrap overflow-x-auto">
@@ -209,6 +214,42 @@ export function CategoryView({ category: cat, items }: CategoryViewProps) {
           </table>
         </div>
       </section>
-    </div>
+
+      {totalPages > 1 && (
+        <nav
+          aria-label="Emoji category pages"
+          className="mt-8 flex items-center justify-center gap-4"
+        >
+          {currentPage > 1 ? (
+            <Link
+              href={emojiCategoryPagePath(cat.slug, currentPage - 1)}
+              rel="prev"
+              className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:border-primary/40 hover:text-primary"
+            >
+              Previous page
+            </Link>
+          ) : (
+            <span className="px-4 py-2 text-sm text-muted-foreground" aria-disabled="true">
+              Previous page
+            </span>
+          )}
+          <span aria-current="page" className="text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages}
+          </span>
+          {currentPage < totalPages ? (
+            <Link
+              href={emojiCategoryPagePath(cat.slug, currentPage + 1)}
+              rel="next"
+              className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:border-primary/40 hover:text-primary"
+            >
+              Next page
+            </Link>
+          ) : (
+            <span className="px-4 py-2 text-sm text-muted-foreground" aria-disabled="true">
+              Next page
+            </span>
+          )}
+        </nav>
+      )}    </div>
   );
 }

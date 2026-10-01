@@ -104,6 +104,13 @@ export function loadSearchIndex(): Promise<CharacterItem[]> {
       loadKaomojiIndex(),
     ])
       .then(([emojis, syms, kaos]) => {
+        // The individual loaders log and return [] on a failed request so their
+        // callers can degrade gracefully. Search must not cache a partial index:
+        // an empty type means the modular load failed, so use the combined file.
+        if (emojis.length === 0 || syms.length === 0 || kaos.length === 0) {
+          throw new Error("One or more modular search indexes are empty");
+        }
+
         const combined = [...emojis, ...syms, ...kaos];
         cachedSearchIndex = combined;
         return combined;

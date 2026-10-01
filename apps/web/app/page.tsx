@@ -33,36 +33,6 @@ export default function Page() {
         url: `https://copypaste-unicode.com/emoji/${item.slug}`,
       })),
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "How do I copy and paste emoji?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Click any emoji on CopyPaste Unicode to instantly copy it to your clipboard. Then paste it anywhere — messages, social media, documents, or code — using Ctrl+V (Windows/Linux) or Cmd+V (Mac).",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Do these emoji work on all devices?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. All characters on CopyPaste Unicode are part of the Unicode Standard, so they work across iOS, Android, macOS, Windows, and Linux on any modern browser or app.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What is the difference between emoji, symbols, and kaomoji?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Emoji are colorful pictographs (😀❤️🔥) standardized by Unicode. Symbols are text-based glyphs like arrows (→), stars (★), and math operators (∑). Kaomoji are Japanese-style text emoticons made from punctuation characters, like (◕‿◕✿) and ¯\\_(ツ)_/¯.",
-          },
-        },
-      ],
-    },
   ];
 
   return (

@@ -15,14 +15,12 @@ export const metadata: Metadata = {
       "Copy and paste hearts, stars, arrows, math symbols, currency signs, shapes, music notes, and more.",
     type: "website",
     url: "https://copypaste-unicode.com/symbols",
-    images: [{ url: "/opengraph-image" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Symbols Copy and Paste — All Symbols",
     description:
       "Copy and paste hearts, stars, arrows, math symbols, currency signs, shapes, music notes, and more.",
-    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://copypaste-unicode.com/symbols",

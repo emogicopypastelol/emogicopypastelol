@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, type ComponentType } from "react";
 import type { CharacterItem } from "@repo/types";
-import { CharacterGrid } from "./CharacterGrid";
 import { Loader2 } from "lucide-react";
 
 import { loadEmojiIndex } from "@/lib/searchIndex";
@@ -15,6 +14,7 @@ export function RemainingEmojiSection({
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [remainingItems, setRemainingItems] = useState<CharacterItem[]>([]);
+  const [GridComponent, setGridComponent] = useState<ComponentType<{ items: CharacterItem[] }> | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const inFlightRef = useRef(false);
   const isMountedRef = useRef(true);
@@ -31,10 +31,14 @@ export function RemainingEmojiSection({
     inFlightRef.current = true;
     setLoading(true);
     try {
-      const all = await loadEmojiIndex();
+      const [all, gridModule] = await Promise.all([
+        loadEmojiIndex(),
+        import("./CharacterGrid"),
+      ]);
       const rest = all.slice(initialCount);
       if (isMountedRef.current) {
         setRemainingItems(rest);
+        setGridComponent(() => gridModule.CharacterGrid);
         setRevealed(true);
       }
     } finally {
@@ -65,10 +69,10 @@ export function RemainingEmojiSection({
     };
   }, [revealed, loadRemaining]);
 
-  if (revealed && remainingItems.length > 0) {
+  if (revealed && remainingItems.length > 0 && GridComponent) {
     return (
       <section className="pt-2 animate-fade-in" aria-label="Additional emojis">
-        <CharacterGrid items={remainingItems} />
+        <GridComponent items={remainingItems} />
       </section>
     );
   }

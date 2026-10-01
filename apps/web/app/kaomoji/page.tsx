@@ -15,14 +15,12 @@ export const metadata: Metadata = {
       "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
     type: "website",
     url: "https://copypaste-unicode.com/kaomoji",
-    images: [{ url: "/opengraph-image" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kaomoji Copy and Paste — Japanese Emoticons",
     description:
       "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
-    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://copypaste-unicode.com/kaomoji",

@@ -22,7 +22,9 @@ const nextConfig = {
       headers: [
         {
           key: "Cache-Control",
-          value: "public, max-age=86400, stale-while-revalidate=604800",
+          // These JSON files use stable URLs and are replaced during deploys.
+          // Revalidate cached copies so clients don't retain an old index for days.
+          value: "public, max-age=0, must-revalidate",
         },
       ],
     },

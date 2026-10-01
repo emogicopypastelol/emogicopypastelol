@@ -19,3 +19,7 @@ export function HomePageClient() {
     </>
   );
 }
+
+/** Semantic alias for use on category, symbol, and kaomoji pages */
+export const SearchAndTrayBar = HomePageClient;
+

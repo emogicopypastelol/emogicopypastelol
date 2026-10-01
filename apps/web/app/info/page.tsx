@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Complete directory, site map, legal information, and advertising details for CopyPaste Unicode.",
   alternates: {
-    canonical: "/info",
+    canonical: "https://copypaste-unicode.com/info",
   },
 };
 
@@ -42,6 +42,12 @@ export default function InfoPage() {
                 Symbols
               </Link>
               <span className="text-muted-foreground"> — Complete collection of text symbols, glyphs, and special characters.</span>
+            </li>
+            <li>
+              <Link href="/kaomoji" className="text-primary hover:underline font-medium">
+                Kaomoji
+              </Link>
+              <span className="text-muted-foreground"> — Japanese-style text emoticons organized by expression.</span>
             </li>
           </ul>
         </div>

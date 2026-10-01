@@ -2,9 +2,22 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { ChevronDown, Menu, X } from "lucide-react";
-import { CategoryMegaMenu } from "./CategoryMegaMenu";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+
+// Lazy-loaded: defers the CategoryMegaMenu bundle (~11 KB) until first interaction.
+const CategoryMegaMenu = dynamic(
+  () => import("./CategoryMegaMenu").then((m) => ({ default: m.CategoryMegaMenu })),
+  { ssr: false, loading: () => null }
+);
+
+const MAIN_LINKS = [
+  { href: "/emoji", label: "Emoji" },
+  { href: "/symbols", label: "Symbols" },
+  { href: "/kaomoji", label: "Kaomoji" },
+] as const;
 
 /**
  * NavbarClient — interactive navigation wrapper for the navbar.
@@ -39,6 +52,24 @@ export function NavbarClient() {
         style={{ marginLeft: 36 }}
         aria-label="Main Navigation"
       >
+        {MAIN_LINKS.map(({ href, label }) => {
+          const active = pathname?.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-current={pathname === href ? "page" : undefined}
+              className={cn(
+                "flex h-10 items-center rounded-lg px-3 text-[15px] outline-none transition-colors",
+                active
+                  ? "font-semibold text-[#059669]"
+                  : "font-medium text-[#65676d] hover:bg-[#f6f6f7] hover:text-[#171719]"
+              )}
+            >
+              {label}
+            </Link>
+          );
+        })}
         <button
           ref={categoriesTriggerRef}
           type="button"
@@ -91,6 +122,25 @@ export function NavbarClient() {
       {isMobileMenuOpen && (
         <div className="border-t border-[#ededee] bg-white px-5 py-4 md:hidden fixed top-[68px] left-0 right-0 z-50 shadow-lg">
           <nav className="flex flex-col gap-1">
+            {MAIN_LINKS.map(({ href, label }) => {
+              const active = pathname?.startsWith(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={pathname === href ? "page" : undefined}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex h-11 items-center rounded-xl px-4 text-[15px]",
+                    active
+                      ? "bg-[#ecfdf5] font-semibold text-[#059669]"
+                      : "font-medium text-[#55575e] hover:bg-[#f7f7f8]"
+                  )}
+                >
+                  {label}
+                </Link>
+              );
+            })}
             <button
               type="button"
               onClick={() => {

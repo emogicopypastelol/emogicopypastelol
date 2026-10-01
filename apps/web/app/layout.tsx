@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
@@ -9,6 +9,10 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#10b981",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +53,13 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: "https://copypaste-unicode.com",
+    languages: {
+      en: "https://copypaste-unicode.com",
+      "x-default": "https://copypaste-unicode.com",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -73,20 +84,29 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "CopyPaste Unicode",
-              url: "https://copypaste-unicode.com",
-              description:
-                "Search, discover, and copy emojis, symbols, and Unicode characters.",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: {
-                  "@type": "EntryPoint",
-                  urlTemplate:
-                    "https://copypaste-unicode.com/search?q={search_term_string}",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  name: "CopyPaste Unicode",
+                  url: "https://copypaste-unicode.com",
+                  description:
+                    "Search, discover, and copy emojis, symbols, and Unicode characters.",
                 },
-                "query-input": "required name=search_term_string",
-              },
+                {
+                  "@type": "WebApplication",
+                  name: "CopyPaste Unicode",
+                  url: "https://copypaste-unicode.com",
+                  applicationCategory: "UtilityApplication",
+                  operatingSystem: "All",
+                  description:
+                    "Free web utility to search and copy emoji, symbols, kaomoji, and Unicode characters. No sign-up required.",
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                  },
+                },
+              ],
             }),
           }}
         />

@@ -16,8 +16,8 @@ export function Navbar() {
           <div className="flex items-center shrink-0">
             <Link
               href="/"
-              aria-label="CopyPaste Home"
-              title="CopyPaste"
+              aria-label="CopyPaste Unicode — Home"
+              title="CopyPaste Unicode"
               className="group flex shrink-0 items-center gap-2.5 select-none"
             >
               <div

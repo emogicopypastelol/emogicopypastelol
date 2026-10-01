@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { kaomoji, kaomojiCategories } from "@repo/data";
 import { StaticCharacterGrid } from "@/components/StaticCharacterGrid";
-import { HomePageClient } from "@/components/HomePage";
+import { SearchAndTrayBar } from "@/components/SearchAndTrayBar";
 import { AdSlot } from "@/components/AdSlot";
 import { CategoryIcon } from "@/components/CategoryIcon";
 
@@ -85,6 +85,7 @@ export default async function KaomojiCategoryPage({
         "@type": "ListItem",
         position: index + 1,
         name: item.name,
+        url: `https://copypaste-unicode.com/kaomoji/${slug}#kaomoji-${item.id}`,
       })),
     },
   ];
@@ -99,7 +100,7 @@ export default async function KaomojiCategoryPage({
         />
       ))}
       {/* Search & Copy Bar (EmojiTray) */}
-      <HomePageClient />
+      <SearchAndTrayBar />
 
       {/* Breadcrumbs */}
       <nav
