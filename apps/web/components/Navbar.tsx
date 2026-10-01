@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Copy, Info } from "lucide-react";
 import { NavbarClient } from "./NavbarClient";
+import { EmojiCategoryPillNav } from "./EmojiCategoryPillNav";
 
 /**
  * Navbar — Server Component.
@@ -36,6 +37,8 @@ export function Navbar() {
           <NavbarClient />
         </div>
       </header>
+
+      <EmojiCategoryPillNav />
 
       {/* Floating Info Button (Bottom Right) */}
       <InfoButton />
