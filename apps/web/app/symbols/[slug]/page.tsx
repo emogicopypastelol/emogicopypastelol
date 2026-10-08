@@ -56,7 +56,7 @@ export async function generateMetadata({
         title,
         description,
         type: "website",
-        url: `https://copypaste-unicode.com/symbols/${slug}`,
+        url: `https://emogilol.vercel.app/symbols/${slug}`,
       },
       twitter: {
         card: "summary",
@@ -64,7 +64,7 @@ export async function generateMetadata({
         description,
       },
       alternates: {
-        canonical: `https://copypaste-unicode.com/symbols/${slug}`,
+        canonical: `https://emogilol.vercel.app/symbols/${slug}`,
       },
     };
   }
@@ -84,7 +84,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: `https://copypaste-unicode.com/symbols/${slug}`,
+      url: `https://emogilol.vercel.app/symbols/${slug}`,
     },
     twitter: {
       card: "summary",
@@ -92,7 +92,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://copypaste-unicode.com/symbols/${slug}`,
+      canonical: `https://emogilol.vercel.app/symbols/${slug}`,
     },
   };
 }
@@ -109,40 +109,37 @@ export default async function SymbolCategoryOrDetailPage({
   if (category) {
     const categorySymbols = symbols.filter((s) => s.category === slug);
     const relatedCategories = symbolCategories.filter((c) => c.slug !== slug).slice(0, 4);
-    const pageUrl = `https://copypaste-unicode.com/symbols/${slug}`;
-    const jsonLd = [
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-          { "@type": "ListItem", position: 2, name: "Symbols", item: "https://copypaste-unicode.com/symbols" },
-          { "@type": "ListItem", position: 3, name: category.name, item: pageUrl },
-        ],
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        name: `${category.name} Symbols`,
-        numberOfItems: categorySymbols.length,
-        itemListElement: categorySymbols.map((item, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          name: item.name,
-          url: `https://copypaste-unicode.com/symbols/${item.slug}`,
-        })),
-      },
-    ];
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+            { "@type": "ListItem", position: 2, name: "Symbols", item: "https://emogilol.vercel.app/symbols" },
+            { "@type": "ListItem", position: 3, name: category.name },
+          ],
+        },
+        {
+          "@type": "ItemList",
+          name: `${category.name} Symbols`,
+          numberOfItems: categorySymbols.length,
+          itemListElement: categorySymbols.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.name,
+            url: `https://emogilol.vercel.app/symbols/${item.slug}`,
+          })),
+        },
+      ],
+    };
 
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
-        {jsonLd.map((schema, index) => (
-          <script
-            key={`${schema["@type"]}-${index}`}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {/* Search & Copy Bar (EmojiTray) */}
         <SearchAndTrayBar />
 
@@ -266,50 +263,48 @@ export default async function SymbolCategoryOrDetailPage({
 
   const unicodeStr = symbol.unicode?.join(" ") ?? "";
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Symbols", item: "https://copypaste-unicode.com/symbols" },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: categoryName,
-          item: `https://copypaste-unicode.com/symbols/${symbol.category}`,
-        },
-        {
-          "@type": "ListItem",
-          position: 4,
-          name: symbol.name,
-          item: `https://copypaste-unicode.com/symbols/${symbol.slug}`,
-        },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "DefinedTerm",
-      name: `${symbol.character} ${symbol.name}`,
-      description: `The ${symbol.name} symbol (${symbol.character}) is a Unicode text character categorized under ${categoryName}.`,
-      termCode: unicodeStr,
-      inDefinedTermSet: {
-        "@type": "DefinedTermSet",
-        name: "Unicode Standard",
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Symbols", item: "https://emogilol.vercel.app/symbols" },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: categoryName,
+            item: `https://emogilol.vercel.app/symbols/${symbol.category}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: symbol.name,
+          },
+        ],
       },
-    },
-  ];
+      {
+        "@type": "DefinedTerm",
+        name: `${symbol.character} ${symbol.name}`,
+        description: `The ${symbol.name} symbol (${symbol.character}) is a Unicode text character categorized under ${categoryName}.`,
+        termCode: unicodeStr,
+        url: `https://emogilol.vercel.app/symbols/${symbol.slug}`,
+        inDefinedTermSet: {
+          "@type": "DefinedTermSet",
+          name: "Unicode Standard",
+        },
+      },
+    ],
+  };
 
   return (
     <div className="content-shell mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
       {/* JSON-LD for rich snippets */}
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Breadcrumbs */}
       <nav

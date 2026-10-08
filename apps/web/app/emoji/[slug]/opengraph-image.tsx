@@ -82,7 +82,7 @@ export default async function OpenGraphImage({
               paddingTop: "20px",
             }}
           >
-            {`copypaste-unicode.com/emoji/${slug}`}
+            {`emogilol.vercel.app/emoji/${slug}`}
           </div>
         </div>
       ),
@@ -142,7 +142,7 @@ export default async function OpenGraphImage({
             paddingTop: "20px",
           }}
         >
-          {`copypaste-unicode.com/emoji/${slug}`}
+          {`emogilol.vercel.app/emoji/${slug}`}
         </div>
       </div>
     ),

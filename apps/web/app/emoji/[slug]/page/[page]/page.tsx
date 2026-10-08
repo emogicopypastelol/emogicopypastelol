@@ -42,7 +42,7 @@ export async function generateMetadata({
     category.name.toLowerCase() + " emoji. " + category.description +
     " Copy each character with one click.";
   const canonical =
-    "https://copypaste-unicode.com" + emojiCategoryPagePath(slug, pageNumber);
+    "https://emogilol.vercel.app" + emojiCategoryPagePath(slug, pageNumber);
 
   return {
     title,

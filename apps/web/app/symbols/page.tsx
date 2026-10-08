@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       "Copy and paste hearts, stars, arrows, math symbols, currency signs, shapes, music notes, and more.",
     type: "website",
-    url: "https://copypaste-unicode.com/symbols",
+    url: "https://emogilol.vercel.app/symbols",
   },
   twitter: {
     card: "summary_large_image",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
       "Copy and paste hearts, stars, arrows, math symbols, currency signs, shapes, music notes, and more.",
   },
   alternates: {
-    canonical: "https://copypaste-unicode.com/symbols",
+    canonical: "https://emogilol.vercel.app/symbols",
   },
 };
 
@@ -37,38 +37,36 @@ export default function SymbolsPage() {
     };
   });
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Symbols", item: "https://copypaste-unicode.com/symbols" },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: "Symbol Categories",
-      numberOfItems: symbolCategories.length,
-      itemListElement: symbolCategories.map((cat, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: cat.name,
-        url: `https://copypaste-unicode.com/symbols/${cat.slug}`,
-      })),
-    },
-  ];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Symbols" },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        name: "Symbol Categories",
+        numberOfItems: symbolCategories.length,
+        itemListElement: symbolCategories.map((cat, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: cat.name,
+          url: `https://emogilol.vercel.app/symbols/${cat.slug}`,
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Breadcrumbs */}
       <nav

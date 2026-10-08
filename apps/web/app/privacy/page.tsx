@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Privacy policy for CopyPaste Unicode.",
   robots: { index: false, follow: true },
   alternates: {
-    canonical: "/privacy",
+    canonical: "https://emogilol.vercel.app/privacy",
   },
 };
 

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Complete directory, site map, legal information, and advertising details for CopyPaste Unicode.",
   alternates: {
-    canonical: "https://copypaste-unicode.com/info",
+    canonical: "https://emogilol.vercel.app/info",
   },
 };
 
@@ -154,14 +154,7 @@ export default function InfoPage() {
             </ul>
           </div>
           <p>
-            For direct sponsorship, brand partnerships, or advertising inquiries, please email{" "}
-            <a
-              href="mailto:ads@copypaste-unicode.com"
-              className="text-primary hover:underline font-medium"
-            >
-              ads@copypaste-unicode.com
-            </a>
-            .
+            For advertising opportunities, programmatic banner placements, or partnership inquiries, please review our standard units listed above or contact our team via the site information directory.
           </p>
         </div>
       </section>

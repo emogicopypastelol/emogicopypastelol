@@ -55,7 +55,6 @@ export function CopyHandler({
     const container = document.getElementById(gridRef);
     if (container) {
       container.addEventListener("click", handleClick);
-      return () => container.removeEventListener("click", handleClick);
     }
 
     // Global image fallback handler if an SVG fails to load
@@ -82,7 +81,9 @@ export function CopyHandler({
     window.addEventListener("error", handleImgError, true);
 
     return () => {
-      document.removeEventListener("click", handleClick);
+      if (container) {
+        container.removeEventListener("click", handleClick);
+      }
       window.removeEventListener("error", handleImgError, true);
     };
   }, [gridRef, handleClick]);

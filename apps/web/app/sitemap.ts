@@ -11,7 +11,7 @@ import {
   emojiCategoryPagePath,
 } from "@/lib/emojiPagination";
 
-const BASE_URL = "https://copypaste-unicode.com";
+const BASE_URL = "https://emogilol.vercel.app";
 const configuredUpdatedAt = process.env.CONTENT_UPDATED_AT;
 const configuredLastModified = configuredUpdatedAt
   ? new Date(configuredUpdatedAt)

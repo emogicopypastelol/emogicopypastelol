@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
     type: "website",
-    url: "https://copypaste-unicode.com/kaomoji",
+    url: "https://emogilol.vercel.app/kaomoji",
   },
   twitter: {
     card: "summary_large_image",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
       "Browse and copy cute Japanese kaomoji emoticons. Shrug, happy, love, cute, sad, angry table flip, animal bears, and cool text faces.",
   },
   alternates: {
-    canonical: "https://copypaste-unicode.com/kaomoji",
+    canonical: "https://emogilol.vercel.app/kaomoji",
   },
 };
 
@@ -37,38 +37,36 @@ export default function KaomojiIndexPage() {
     };
   });
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Kaomoji", item: "https://copypaste-unicode.com/kaomoji" },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: "Kaomoji Categories",
-      numberOfItems: kaomojiCategories.length,
-      itemListElement: kaomojiCategories.map((cat, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: cat.name,
-        url: `https://copypaste-unicode.com/kaomoji/${cat.slug}`,
-      })),
-    },
-  ];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Kaomoji" },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        name: "Kaomoji Categories",
+        numberOfItems: kaomojiCategories.length,
+        itemListElement: kaomojiCategories.map((cat, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: cat.name,
+          url: `https://emogilol.vercel.app/kaomoji/${cat.slug}`,
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumbs */}
       <nav
         aria-label="Breadcrumb"

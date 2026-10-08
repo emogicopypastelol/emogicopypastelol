@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   description:
     "Search, discover, and copy emojis, symbols, Unicode characters, arrows, hearts, stars, math symbols, and more. One click to copy.",
-  metadataBase: new URL("https://copypaste-unicode.com"),
+  metadataBase: new URL("https://emogilol.vercel.app"),
   keywords: [
     "emoji copy paste",
     "symbols",
@@ -56,10 +56,10 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://copypaste-unicode.com",
+    canonical: "https://emogilol.vercel.app",
     languages: {
-      en: "https://copypaste-unicode.com",
-      "x-default": "https://copypaste-unicode.com",
+      en: "https://emogilol.vercel.app",
+      "x-default": "https://emogilol.vercel.app",
     },
   },
 };
@@ -86,29 +86,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "WebSite",
-                  name: "CopyPaste Unicode",
-                  url: "https://copypaste-unicode.com",
-                  description:
-                    "Search, discover, and copy emojis, symbols, and Unicode characters.",
-                },
-                {
-                  "@type": "WebApplication",
-                  name: "CopyPaste Unicode",
-                  url: "https://copypaste-unicode.com",
-                  applicationCategory: "UtilityApplication",
-                  operatingSystem: "All",
-                  description:
-                    "Free web utility to search and copy emoji, symbols, kaomoji, and Unicode characters. No sign-up required.",
-                  offers: {
-                    "@type": "Offer",
-                    price: "0",
-                    priceCurrency: "USD",
-                  },
-                },
-              ],
+              "@type": "WebSite",
+              name: "CopyPaste Unicode",
+              url: "https://emogilol.vercel.app",
+              description:
+                "Search, discover, and copy emojis, symbols, and Unicode characters.",
+              inLanguage: "en",
+              publisher: {
+                "@type": "Organization",
+                name: "CopyPaste Unicode",
+                url: "https://emogilol.vercel.app",
+              },
             }),
           }}
         />

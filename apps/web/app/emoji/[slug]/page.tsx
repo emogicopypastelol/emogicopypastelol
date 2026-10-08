@@ -58,7 +58,7 @@ export async function generateMetadata({
         title,
         description,
         type: "website",
-        url: `https://copypaste-unicode.com/emoji/${slug}`,
+        url: `https://emogilol.vercel.app/emoji/${slug}`,
       },
       twitter: {
         card: "summary",
@@ -66,7 +66,7 @@ export async function generateMetadata({
         description,
       },
       alternates: {
-        canonical: `https://copypaste-unicode.com/emoji/${slug}`,
+        canonical: `https://emogilol.vercel.app/emoji/${slug}`,
       },
     };
   }
@@ -86,7 +86,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: `https://copypaste-unicode.com/emoji/${slug}`,
+      url: `https://emogilol.vercel.app/emoji/${slug}`,
     },
     twitter: {
       card: "summary",
@@ -94,7 +94,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://copypaste-unicode.com/emoji/${slug}`,
+      canonical: `https://emogilol.vercel.app/emoji/${slug}`,
     },
   };
 }
@@ -135,50 +135,48 @@ export default async function EmojiOrCategoryPage({
   const emojiCategory = emojiCategories.find((c) => c.slug === emoji.category);
   const categoryName = emojiCategory?.name ?? emoji.category.replace(/-/g, " ");
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Emoji", item: "https://copypaste-unicode.com/emoji" },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: categoryName,
-          item: `https://copypaste-unicode.com/emoji/${emoji.category}`,
-        },
-        {
-          "@type": "ListItem",
-          position: 4,
-          name: emoji.name,
-          item: `https://copypaste-unicode.com/emoji/${emoji.slug}`,
-        },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "DefinedTerm",
-      name: `${emoji.character} ${emoji.name}`,
-      description: `The ${emoji.name} emoji (${emoji.character}) categorized under ${emoji.category}.`,
-      termCode: emoji.unicode?.join(" ") ?? "",
-      inDefinedTermSet: {
-        "@type": "DefinedTermSet",
-        name: "Unicode Standard",
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Emoji", item: "https://emogilol.vercel.app/emoji" },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: categoryName,
+            item: `https://emogilol.vercel.app/emoji/${emoji.category}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: emoji.name,
+          },
+        ],
       },
-    },
-  ];
+      {
+        "@type": "DefinedTerm",
+        name: `${emoji.character} ${emoji.name}`,
+        description: `The ${emoji.name} emoji (${emoji.character}) categorized under ${emoji.category}.`,
+        termCode: emoji.unicode?.join(" ") ?? "",
+        url: `https://emogilol.vercel.app/emoji/${emoji.slug}`,
+        inDefinedTermSet: {
+          "@type": "DefinedTermSet",
+          name: "Unicode Standard",
+        },
+      },
+    ],
+  };
 
   return (
     <div className="content-shell mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
       {/* JSON-LD for rich snippets */}
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Breadcrumbs */}
       <nav

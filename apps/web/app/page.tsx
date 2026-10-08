@@ -7,7 +7,7 @@ import { RemainingEmojiSection } from "@/components/RemainingEmojiSection";
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: "https://copypaste-unicode.com",
+    canonical: "https://emogilol.vercel.app",
   },
 };
 
@@ -18,33 +18,28 @@ export default function Page() {
   const allEmoji = getAllEmoji();
   const initialEmoji = allEmoji.slice(0, INITIAL_COUNT);
 
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: "Popular Emoji",
-      description:
-        "Browse and copy over 1,800 emoji, symbols, and Unicode characters. One click to copy and paste anywhere.",
-      numberOfItems: allEmoji.length,
-      itemListElement: initialEmoji.slice(0, 20).map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name,
-        url: `https://copypaste-unicode.com/emoji/${item.slug}`,
-      })),
-    },
-  ];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Popular Emoji",
+    description:
+      "Browse and copy over 1,800 emoji, symbols, and Unicode characters. One click to copy and paste anywhere.",
+    numberOfItems: allEmoji.length,
+    itemListElement: initialEmoji.slice(0, 20).map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: `https://emogilol.vercel.app/emoji/${item.slug}`,
+    })),
+  };
 
   return (
     <div className="homepage-layout">
       {/* JSON-LD structured data for rich snippets */}
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Left Skyscraper Ad Space */}
       <aside className="homepage-sidebar hidden lg:block sticky top-20">

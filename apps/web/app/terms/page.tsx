@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Terms of service for CopyPaste Unicode.",
   robots: { index: false, follow: true },
   alternates: {
-    canonical: "/terms",
+    canonical: "https://emogilol.vercel.app/terms",
   },
 };
 

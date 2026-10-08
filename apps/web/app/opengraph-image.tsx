@@ -97,7 +97,7 @@ export default function OpenGraphImage() {
             paddingTop: "20px",
           }}
         >
-          copypaste-unicode.com
+          emogilol.vercel.app
         </div>
       </div>
     ),

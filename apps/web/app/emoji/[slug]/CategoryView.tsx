@@ -34,40 +34,37 @@ export function CategoryView({ category: cat, items, totalCount, currentPage, to
     (c) => c.slug !== cat.slug
   );
   const guidance = CATEGORY_GUIDANCE[cat.slug] ?? `Browse ${cat.name.toLowerCase()} emoji for messages, captions, documents, and creative text.`;
-  const pageUrl = `https://copypaste-unicode.com/emoji/${cat.slug}`;
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Emoji", item: "https://copypaste-unicode.com/emoji" },
-        { "@type": "ListItem", position: 3, name: cat.name + (currentPage > 1 ? " — Page " + currentPage : ""), item: currentPage === 1 ? pageUrl : "https://copypaste-unicode.com" + emojiCategoryPagePath(cat.slug, currentPage) },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: cat.name + " Emoji — page " + currentPage + " of " + totalPages,
-      numberOfItems: items.length,
-      itemListElement: items.map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name,
-        url: `https://copypaste-unicode.com/emoji/${item.slug}`,
-      })),
-    },
-  ];
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Emoji", item: "https://emogilol.vercel.app/emoji" },
+          { "@type": "ListItem", position: 3, name: cat.name + (currentPage > 1 ? " — Page " + currentPage : "") },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        name: cat.name + " Emoji — page " + currentPage + " of " + totalPages,
+        numberOfItems: items.length,
+        itemListElement: items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          url: `https://emogilol.vercel.app/emoji/${item.slug}`,
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="content-shell mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Search & Interactive Copy Bar (EmojiTray) */}
       <SearchAndTrayBar />
 

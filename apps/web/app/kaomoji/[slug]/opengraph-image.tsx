@@ -76,7 +76,7 @@ export default async function OpenGraphImage({
             paddingTop: "20px",
           }}
         >
-          {`copypaste-unicode.com/kaomoji/${slug}`}
+          {`emogilol.vercel.app/kaomoji/${slug}`}
         </div>
       </div>
     ),

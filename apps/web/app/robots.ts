@@ -16,6 +16,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://copypaste-unicode.com/sitemap.xml",
+    sitemap: "https://emogilol.vercel.app/sitemap.xml",
   };
 }

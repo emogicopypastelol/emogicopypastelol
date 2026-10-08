@@ -48,6 +48,8 @@ export function EmojiDetailClient({
               src={getTwemojiUrl(emoji.character)}
               alt={emoji.name}
               className="w-24 h-24 sm:w-28 sm:h-28 object-contain pointer-events-none"
+              width={112}
+              height={112}
               draggable={false}
             />
           ) : (

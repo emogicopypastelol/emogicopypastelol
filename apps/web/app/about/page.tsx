@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "About CopyPaste Unicode — a free, privacy-first utility for searching and copying emoji, symbols, and Unicode characters. Learn how it works, where the data comes from, and what we collect.",
   alternates: {
-    canonical: "https://copypaste-unicode.com/about",
+    canonical: "https://emogilol.vercel.app/about",
   },
 };
 
@@ -85,7 +85,7 @@ export default function AboutPage() {
             </li>
             <li>
               <a
-                href="https://twemoji.twitter.com"
+                href="https://github.com/twitter/twemoji"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
@@ -114,13 +114,9 @@ export default function AboutPage() {
         <section>
           <h2 className="text-lg font-semibold mb-2">Contact &amp; Advertising</h2>
           <p className="text-muted-foreground">
-            For advertising inquiries or direct sponsorship, email{" "}
-            <a href="mailto:ads@copypaste-unicode.com" className="text-primary hover:underline">
-              ads@copypaste-unicode.com
-            </a>
-            . For general questions, visit the{" "}
+            For general questions, directory links, or site information, please visit the{" "}
             <a href="/info" className="text-primary hover:underline">
-              site directory
+              site directory &amp; information page
             </a>
             .
           </p>

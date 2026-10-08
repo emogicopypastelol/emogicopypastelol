@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             paddingTop: "20px",
           }}
         >
-          copypaste-unicode.com/kaomoji
+          emogilol.vercel.app/kaomoji
         </div>
       </div>
     ),

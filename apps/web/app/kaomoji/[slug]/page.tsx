@@ -41,7 +41,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: `https://copypaste-unicode.com/kaomoji/${slug}`,
+      url: `https://emogilol.vercel.app/kaomoji/${slug}`,
     },
     twitter: {
       card: "summary",
@@ -49,7 +49,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://copypaste-unicode.com/kaomoji/${slug}`,
+      canonical: `https://emogilol.vercel.app/kaomoji/${slug}`,
     },
   };
 }
@@ -65,40 +65,38 @@ export default async function KaomojiCategoryPage({
 
   const categoryItems = kaomoji.filter((k) => k.category === slug);
   const relatedCategories = kaomojiCategories.filter((c) => c.slug !== slug).slice(0, 4);
-  const pageUrl = `https://copypaste-unicode.com/kaomoji/${slug}`;
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://copypaste-unicode.com/" },
-        { "@type": "ListItem", position: 2, name: "Kaomoji", item: "https://copypaste-unicode.com/kaomoji" },
-        { "@type": "ListItem", position: 3, name: category.name, item: pageUrl },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: `${category.name} Kaomoji`,
-      numberOfItems: categoryItems.length,
-      itemListElement: categoryItems.map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name,
-        url: `https://copypaste-unicode.com/kaomoji/${slug}#kaomoji-${item.id}`,
-      })),
-    },
-  ];
+  const pageUrl = `https://emogilol.vercel.app/kaomoji/${slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://emogilol.vercel.app/" },
+          { "@type": "ListItem", position: 2, name: "Kaomoji", item: "https://emogilol.vercel.app/kaomoji" },
+          { "@type": "ListItem", position: 3, name: category.name },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        name: `${category.name} Kaomoji`,
+        numberOfItems: categoryItems.length,
+        url: pageUrl,
+        itemListElement: categoryItems.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      {jsonLd.map((schema, index) => (
-        <script
-          key={`${schema["@type"]}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Search & Copy Bar (EmojiTray) */}
       <SearchAndTrayBar />
 
