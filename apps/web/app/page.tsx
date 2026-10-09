@@ -36,6 +36,7 @@ export default function Page() {
   return (
     <div className="homepage-layout">
       {/* JSON-LD structured data for rich snippets */}
+      Prithwi singh
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
